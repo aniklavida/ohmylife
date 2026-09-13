@@ -1,0 +1,95 @@
+/*
+ * Design tokens — the constraint layer (docs/STRUCTURE.md, "components/primitives/").
+ *
+ * Every colour the product is allowed to reach for lives here, and only
+ * here. There is deliberately no error/danger/alert token: the brief's
+ * "nothing red, anywhere" (docs/SPEC.md §15) starts by that colour not
+ * existing to reach for, not by a review rule asking nobody to use it.
+ * `tests/design-system-constraints.test.ts` asserts both that no such
+ * token is declared and that no hex value in this file reads as an alert
+ * red.
+ *
+ * Light and dark are each written out in full — design brief §6.5, "both
+ * must be designed, not inverted." Dark is a warm, lamplit dark: the same
+ * forest, terracotta and script colours shifted for a dark ground, not a
+ * flipped palette. Every foreground/background pairing actually used by a
+ * component in this repository has been measured against WCAG AA (4.5:1
+ * for body text, 3:1 for large text and UI graphics); all comfortably
+ * clear the minimum.
+ */
+
+:root {
+  /* Warm neutrals — cream and parchment. The page's own ground, never the sidebar's. */
+  --color-bg: #fbf3e6;
+  --color-surface: #f4e8d6;
+  --color-surface-strong: #ecd9be;
+  --color-border: #ddc7a4;
+
+  /* Ink — body text on cream/parchment. */
+  --color-ink: #2b2015;
+  --color-ink-muted: #6b5c48;
+
+  /* The sidebar's own small palette — deep forest green, full height. */
+  --color-forest: #1e3b2a;
+  --color-forest-strong: #16301f;
+  --color-forest-ink: #f3ead8;
+  --color-forest-ink-muted: #b9c9b7;
+
+  /* Raw accent hues, for decorative surfaces (plates, scrims, borders, the
+     plum banner) where the AA text-contrast rules below do not apply directly. */
+  --color-terracotta: #d98356;
+  --color-sage: #7c9473;
+  --color-dusty-rose: #c98c87;
+  --color-plum: #6e3550;
+  --color-plum-ink: #f6e9ef;
+
+  /* Semantic, contrast-checked accent text. Each resolves to a different raw
+     shade per theme so a component never has to know which one is safe to
+     read against today's ground — every pairing below is measured AA or
+     better. */
+  --color-accent-text: #96401f; /* on --color-bg / --color-surface, 4.5:1+ */
+  --color-accent-ui: #d98356; /* on --color-forest, 3:1+ (large text / icons) */
+  --color-script-text: #8b4a33; /* on --color-bg, 4.5:1+ */
+
+  /* Type. The Google Fonts self-host by way of `next/font` (app/fonts.ts),
+     so the running server makes no font request of its own at runtime —
+     only Next's build step ever talks to Google, consistent with
+     docs/SPEC.md §17's "no outbound call of any kind from the server." */
+  --font-serif: var(--font-fraunces), Georgia, "Iowan Old Style", serif;
+  --font-script: var(--font-caveat), "Segoe Script", cursive;
+  --font-sans: var(--font-inter), "Segoe UI", sans-serif;
+
+  /* Scale */
+  --radius-plate: 22px;
+  --radius-card: 16px;
+  --shadow-plate: 0 18px 40px -20px rgba(30, 20, 8, 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1c1712;
+    --color-surface: #26201a;
+    --color-surface-strong: #322a22;
+    --color-border: #46392b;
+
+    --color-ink: #f1e7d6;
+    --color-ink-muted: #c4b7a2;
+
+    --color-forest: #142a1e;
+    --color-forest-strong: #0e2016;
+    --color-forest-ink: #ede4d0;
+    --color-forest-ink-muted: #9fb39b;
+
+    --color-terracotta: #e08a5b;
+    --color-sage: #9bb592;
+    --color-dusty-rose: #d9a29d;
+    --color-plum: #4a2438;
+    --color-plum-ink: #f3e3ec;
+
+    --color-accent-text: #e08a5b; /* on --color-bg, 4.5:1+ */
+    --color-accent-ui: #e08a5b; /* on --color-forest, 3:1+ */
+    --color-script-text: #e3a47c; /* on --color-bg, 4.5:1+ */
+
+    --shadow-plate: 0 18px 44px -18px rgba(0, 0, 0, 0.65);
+  }
+}
