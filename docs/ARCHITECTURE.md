@@ -87,7 +87,7 @@ The connected agent runs outside this system. Whatever it reads goes wherever th
 
 No architectural choice here changes that, and the design does not pretend otherwise. What it can do is make the boundary visible: the user chooses which areas an agent may read, and the tending record shows what it did with them.
 
-This is why the documentation separates **the server's guarantee** (stores locally, makes no outbound calls of its own — planned, to be tested by asserting zero egress) from **the agent's behaviour** (outside our control). Merging those two into one comforting sentence would be the single most damaging untrue claim this project could make.
+This is why the documentation separates **the server's guarantee** (stores locally, no telemetry, no update check — and, with an in-site provider key configured, outbound calls to that one provider and to nothing else; planned for v1.0, to be tested in both configurations) from **the agent's behaviour** (outside our control). Merging those two into one comforting sentence would be the single most damaging untrue claim this project could make.
 
 ## 7 · Themes are data
 
@@ -105,7 +105,7 @@ The structural tests are not coverage — each one guards a promise:
 | No agent delete path exists | An agent cannot destroy a memory |
 | `someday` cannot take a date | Someday carries no guilt |
 | No badge, ring or content-state red in the component library | No guilt mechanics, structurally |
-| Zero outbound calls from the server | The privacy claim is a claim, not an intention |
+| Zero outbound calls with no provider key configured, and calls only to that provider with one | The privacy claim is a claim, not an intention |
 | `lib/` imports neither `app/` nor `mcp/` | One core, and the rules live in one place |
 
 Every one of them is the kind of rule that a contributor who has not read the documentation would otherwise break in good faith. Documentation cannot stop that. A failing build can.

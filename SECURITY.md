@@ -16,10 +16,10 @@ This application is designed to hold the things a person would least like expose
 
 Two boundaries, and only the first is ours:
 
-- **The server** runs on the user's own machine, stores plain files in a volume they own, and is planned to make no outbound network calls of its own. A v1 test will assert zero egress.
+- **The server** runs on the user's own machine and stores plain files in a volume they own. It is planned to send no telemetry and run no update check; with an in-site provider key configured it calls that provider and nothing else. The v1 tests are scoped to match: zero egress with no key configured, and calls only to that endpoint with one.
 - **The connected agent** is outside that boundary. Whatever it reads travels to wherever that agent runs. The project can show the user what was read; it cannot prevent it leaving.
 
-**This project therefore does not claim that a user's data never leaves their machine.** That claim would be untrue under a cloud-hosted agent, and a security policy that overstates is worse than none.
+**This project therefore does not claim that a user's data never leaves their machine.** That claim would be untrue under a cloud-hosted agent, and untrue again once an in-site provider key is configured. A security policy that overstates is worse than none.
 
 ## Security model — planned
 

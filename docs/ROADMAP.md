@@ -28,7 +28,7 @@ The full tool surface, with `reason` required on every write, `leave_alone` as a
 
 The single access gate, per-area grants and revocation, and whatever the privacy decision turns out to require.
 
-**Done:** an agent that has not been granted an area cannot read it and discovers that from the schema rather than by error; the server makes zero outbound calls, asserted by a test.
+**Done:** an agent that has not been granted an area cannot read it and discovers that from the schema rather than by error; with no in-site provider key configured the server makes zero outbound calls, and with one the only outbound calls go to that provider — both asserted by tests.
 
 ## 4 · The design system and the quiet state
 

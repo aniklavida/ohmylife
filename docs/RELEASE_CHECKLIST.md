@@ -10,9 +10,9 @@
 ## Privacy — read every sentence, not just the section
 
 - [ ] The server's guarantee and the connected agent's behaviour are described **separately**, everywhere they appear.
-- [ ] **No sentence anywhere implies that a user's data never leaves their machine.** It would be untrue under a hosted agent.
-- [ ] Every privacy claim is true under **every** supported configuration, including a remote agent over HTTP.
-- [ ] The server makes zero outbound network calls during a full session, asserted by a test.
+- [ ] **No sentence anywhere implies that a user's data never leaves their machine.** It would be untrue under a hosted agent, and untrue again with an in-site provider key configured.
+- [ ] Every privacy claim is true under **every** supported configuration — no model connected, a local model, a hosted model over MCP, a remote agent over HTTP, and an in-site provider key.
+- [ ] With no in-site provider key configured, the server makes zero outbound network calls during a full session, asserted by a test. With a key configured, the only outbound calls are to that provider's endpoint — also asserted.
 - [ ] Each open privacy question from the specification is either answered and implemented, or still visibly marked open.
 
 ## The promises

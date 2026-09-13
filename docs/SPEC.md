@@ -131,7 +131,7 @@ Health and money are in scope, so this is stated precisely rather than reassurin
 
 **Two boundaries, and only the first is ours:**
 
-- **The server** stores everything on the user's machine and makes no outbound network calls of its own. *(Planned. A v1 test will assert zero egress.)*
+- **The server** stores everything on the user's machine, sends no telemetry and runs no update check. **But with an in-site provider key configured (§10) the server itself calls that provider.** The honest sentence is therefore *"nothing leaves unless you configure a key, and then only to the provider you chose"* — not a blanket zero-egress promise, which would be false in that configuration. *(Planned for v1.0; the v1 test is scoped to match — §18.)*
 - **The connected agent** is outside that boundary. Whatever it reads travels to wherever that agent runs. The product can show the user what was read; it cannot stop it leaving.
 
 **This project therefore does not claim that your data never leaves your machine.** Under a hosted model that claim would be false, and a privacy claim that is only true in some configurations is not a privacy claim.
@@ -245,7 +245,7 @@ docker run -v ./life:/life -p 3000:3000 ohmylife
 - **The volume is the whole life.** Copy the folder and you have moved house. There is no export feature because there is nothing to export from.
 - **MCP over stdio** for a local agent — no network, no token. Streamable HTTP behind a bearer token for a remote agent, off by default.
 - **Backup is your own `git` repository**, if you want one. Plain files make that free rather than a feature.
-- **No telemetry, no update check, no outbound call of any kind from the server** — to be asserted by a test, which is what will make it a claim rather than an intention.
+- **No telemetry and no update check.** The server makes no outbound call of its own — **except to the provider whose key the user configured in-site (§10), and to nothing else.** To be asserted by a test in both configurations (§18), which is what will make it a claim rather than an intention.
 
 ## 17 · Non-goals
 
@@ -265,7 +265,7 @@ Not a hosted service · not a template for someone else's note tool · not a pho
 - [ ] The component library contains no streak, badge count or content-state red.
 - [ ] `someday` entries cannot be given a due date through any tool, and never appear in `whats_open`.
 - [ ] An agent has no delete path; archiving is the only removal and it is reversible.
-- [ ] The server makes zero outbound network calls during a full session, asserted by a test.
+- [ ] With no in-site provider key configured, the server makes zero outbound network calls during a full session, asserted by a test. With a key configured, the only outbound calls are to that provider's endpoint — also asserted, because that is the narrower claim §9 actually makes.
 - [ ] The privacy wording distinguishes the server's guarantee from the connected agent's behaviour, and neither sentence overstates.
 - [ ] Every public claim has working evidence or is labelled planned.
 
@@ -273,7 +273,7 @@ Not a hosted service · not a template for someone else's note tool · not a pho
 
 - **The product is a promise about someone else's model.** A careless agent leaves the life stale and makes this look broken. Output quality is outside the project's control, and the documentation says so rather than hoping.
 - **The trust cliff.** One wrong silent write into someone's memories can end the relationship with the product permanently. The tending record and one-click reversal are the mitigation, and they are load-bearing rather than decorative.
-- **Privacy wording is a real risk, not a documentation chore.** An unqualified "never leaves your machine" would be untrue under a hosted agent. §9 exists to keep that sentence from being written.
+- **Privacy wording is a real risk, not a documentation chore.** An unqualified "never leaves your machine" would be untrue under a hosted agent, and untrue again once an in-site provider key is configured. §9 fixes the exact sentence that may be written instead.
 - **Photograph licensing could block release** more plausibly than any engineering task. A photographic product that cannot legally ship its photographs has no design.
 - **Breadth.** Twelve areas is a wide surface. Depth has to be staged, and shipping all twelve shallowly would produce exactly the "every database needs updating" feeling the product exists to remove.
 - **The wander mode has no success metric**, by design — it is the mode with no task. It can only be judged by whether it is pleasant, which means it can rot without anything failing.

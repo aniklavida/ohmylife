@@ -86,10 +86,12 @@ This matters more here than in most software. The product asks you to put your l
 
 Health and money are in scope, so this has to be exact rather than reassuring. There are two boundaries, and only one of them is ours:
 
-- **The OhMyLife server** stores everything on your own machine and makes no outbound network calls of its own. *(Planned. A v1 test will assert zero egress.)*
+- **The OhMyLife server** stores everything on your own machine, sends no telemetry and runs no update check. If you add your own provider key in the site, the server calls that one provider and nothing else. The claim is therefore **"nothing leaves unless you configure a key, and then only to the provider you chose"** — never a blanket promise that nothing leaves at all. *(Planned for v1.0. Two tests: zero outbound calls with no key configured, and calls only to that provider's endpoint with one configured.)*
 - **The AI you connect** is outside that boundary. If you connect a hosted model, whatever it reads travels to whoever runs that model. We can show you what was read. We cannot stop it leaving.
 
-**So: "your data never leaves your machine" is not a claim this project makes**, because it would not be true under a cloud-hosted agent. What is true is that nothing leaves because of *us*, and that you choose what your agent is allowed to see.
+**So: "your data never leaves your machine" is not a claim this project makes**, because it would be false under a cloud-hosted agent, and false again the moment you configure a key.
+
+**If you want nothing to leave your machine, point OhMyLife at a local model — or connect no model at all.** That is the only thing that actually delivers it, so it is what this documentation names rather than a setting that merely implies it.
 
 The detailed access model — which areas an agent may read, what stays sealed, and what requires your explicit yes — is still being decided and is marked as open in the [specification](docs/SPEC.md).
 

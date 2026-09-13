@@ -91,7 +91,7 @@ A theme is a folder: `theme.json` plus images. **Never hard-code a photograph, a
 Health and money are in scope. Two rules:
 
 - **Never widen what an agent can read without going through `lib/access/policy.ts`.** It is the single gate; a tool that checks for itself is the tool that eventually leaks.
-- **Never write a privacy claim that is not true under every configuration.** Specifically: this project does not claim that your data never leaves your machine, because a connected cloud agent takes whatever it reads with it. Describe the server's guarantee and the agent's behaviour separately.
+- **Never write a privacy claim that is not true under every configuration.** Specifically: this project does not claim that your data never leaves your machine — a connected cloud agent takes whatever it reads with it, and an in-site provider key makes the server itself call that provider. The sentence that is true is *"nothing leaves unless you configure a key, and then only to the provider you chose."* Describe the server's guarantee and the agent's behaviour separately.
 
 ## Truthfulness
 
@@ -105,4 +105,4 @@ Check that a dependency exists, is maintained, and carries a licence compatible 
 
 ## Tests
 
-Unit tests for `lib/`, and a set of structural tests that protect the promises above: the index rebuilds from files, no agent delete path exists, `someday` cannot take a date, the component library has no badge or ring, and the server makes no outbound network calls. Those are not optional extras — they are how the product's guarantees stay true after the people who wrote them move on.
+Unit tests for `lib/`, and a set of structural tests that protect the promises above: the index rebuilds from files, no agent delete path exists, `someday` cannot take a date, the component library has no badge or ring, and the server makes no outbound network calls when no provider key is configured (and calls only that provider when one is). Those are not optional extras — they are how the product's guarantees stay true after the people who wrote them move on.
