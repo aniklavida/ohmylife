@@ -12,7 +12,6 @@ physical_location: Top drawer, study desk
 source: user
 created_at: '2024-01-20T11:00:00Z'
 updated_at: '2024-01-20T11:00:00Z'
-sensitivity: sealed
 ---
 Renew by early 2029 — some visa applications refuse anything with less
 than six months left on it, so the real deadline is more like late
