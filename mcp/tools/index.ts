@@ -14,6 +14,9 @@ import * as updateEntry from "./update-entry";
 import * as linkEntries from "./link-entries";
 import * as attachFile from "./attach-file";
 import * as archiveEntry from "./archive-entry";
+import * as leaveAlone from "./leave-alone";
+import * as propose from "./propose";
+import * as requestAccess from "./request-access";
 
 export function registerTools(server: McpServer): void {
   // Read tools — see docs/SPEC.md §9.
@@ -30,5 +33,8 @@ export function registerTools(server: McpServer): void {
   server.registerTool(attachFile.name, attachFile.config, attachFile.handler);
   server.registerTool(archiveEntry.name, archiveEntry.config, archiveEntry.handler);
 
-  // Trust tools    — leave_alone, propose, request_access
+  // Trust and permission tools.
+  server.registerTool(leaveAlone.name, leaveAlone.config, leaveAlone.handler);
+  server.registerTool(propose.name, propose.config, propose.handler);
+  server.registerTool(requestAccess.name, requestAccess.config, requestAccess.handler);
 }
