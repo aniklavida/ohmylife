@@ -22,8 +22,24 @@ describe("the quiet state", () => {
     expect(html.length).toBeGreaterThan(400);
   });
 
-  it("carries a real, accessible description of the placeholder image, not a bare empty alt", () => {
-    expect(html).toMatch(/Placeholder — a warm, lamplit corner/);
+  it("describes the hero image for a screen reader, rather than leaving a bare empty alt", () => {
+    // The scene itself is `aria-hidden`, so this sentence is the only thing
+    // a screen reader gets for the hero — it has to describe the picture.
+    expect(html).toMatch(/A drawn scene of a quiet room at dusk/);
+  });
+
+  it("says nothing to the reader about how the project is built or planned", () => {
+    // This screen once shipped its own to-do list inside the hero's `alt`,
+    // where a screen reader read it aloud. Anything describing the state of
+    // the work — rather than the product — is a defect on a user-facing
+    // surface, so the rendered output is checked for it directly.
+    // Deliberately not a bare /decision/: `Decisions` is one of the life
+    // areas this product stores (docs/SPEC.md §5) and will legitimately be
+    // rendered as a label. Only process language is matched.
+    for (const screen of [html, renderToStaticMarkup(createElement(OpenToday, { items: [] }))]) {
+      expect(screen).not.toMatch(/\b(pending|blocker|placeholder|TODO|unreleased|not yet built)\b/i);
+      expect(screen).not.toMatch(/\b[A-Za-z_-]+\.md\b/);
+    }
   });
 
   it('never mentions a count of items — quiet is not "0 things"', () => {

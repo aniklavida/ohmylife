@@ -20,9 +20,8 @@ export function QuietState() {
         variant="hero"
         image={{
           alt:
-            "Placeholder — a warm, lamplit corner standing in for a licensed " +
-            "photograph. Photograph sourcing is a recorded v1 blocker, pending " +
-            "Anik's decision (see DECISIONS.md).",
+            "A drawn scene of a quiet room at dusk: warm lamplight glowing " +
+            "beside a tall window, with two leafy plants in silhouette.",
         }}
       >
         <Label>Today</Label>
