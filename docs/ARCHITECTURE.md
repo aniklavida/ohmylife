@@ -79,13 +79,13 @@ Every read path asks a single policy module which areas the connected agent may 
 
 The reasoning is unglamorous: with per-tool checks, the one tool whose check is forgotten is the one that leaks health data. One gate can be reviewed once and tested once.
 
-The specific tiers, defaults and whether anything is encrypted at rest are **still open** — see [SPEC §9](SPEC.md#9--privacy--partly-open). The single-gate structure holds regardless of how that is answered, which is why it can be built before the answer arrives.
+There are **no per-entry tiers, and nothing is encrypted at rest** — see [SPEC §9](SPEC.md#9--privacy--settled). What is still undecided is whether per-area grants survive as a mechanism of their own. The single-gate structure holds either way, which is why it can be built before that is answered. **Nothing gates reads today:** the MCP server reports its access policy as not enforced.
 
 ## 6 · The boundary the architecture cannot cross
 
 The connected agent runs outside this system. Whatever it reads goes wherever that agent runs.
 
-No architectural choice here changes that, and the design does not pretend otherwise. What it can do is make the boundary visible: the user chooses which areas an agent may read, and the tending record shows what it did with them.
+No architectural choice here changes that, and the design does not pretend otherwise. What it can do is make the boundary visible: the tending record shows what the agent did with what it read, and per-area grants — **planned, not implemented, and not enforced today** — would let the user say which areas it may reach at all.
 
 This is why the documentation separates **the server's guarantee** (stores locally, no telemetry, no update check — and, with an in-site provider key configured, outbound calls to that one provider and to nothing else; planned for v1.0, to be tested in both configurations) from **the agent's behaviour** (outside our control). Merging those two into one comforting sentence would be the single most damaging untrue claim this project could make.
 

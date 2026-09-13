@@ -29,5 +29,6 @@ Nothing below is implemented.
 - Agents have no delete path. Removal is archiving, and it is reversible.
 - Every write is attributed and reversible from where the user reads it.
 - The remote MCP transport is off by default; a local agent connects over stdio with no network at all.
-- Sensitivity tiers, encryption at rest, and which areas an agent may read without asking are **still being decided** and are marked open in the [specification](docs/SPEC.md). Do not assume any of them is in place.
+- **There are no sensitivity tiers and no encryption at rest**, and neither is planned. Entries stay plain Markdown on disk; full-disk encryption — FileVault, BitLocker, LUKS — is the operating system's job and is where the stolen-device threat is handled. Anyone who wants nothing leaving their machine points this at a local model, or connects no model at all.
+- Which areas an agent may read without asking is **still being decided** and is marked open in the [specification](docs/SPEC.md). **No access policy is enforced today** — the MCP server reports its access state as unenforced. Do not assume any gating is in place.
 - Secrets stay outside the repository. `.env` is never committed.

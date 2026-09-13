@@ -64,7 +64,6 @@ Every item in every area shares one envelope and adds typed fields per kind.
 | `source` | **Who wrote this, and from what.** Required — `user`, an agent, or an import |
 | `confidence` | For anything an agent inferred rather than was told |
 | `links` | Typed edges to other entries |
-| `sensitivity` | See §9 |
 | `attachments` | Originals, stored beside the entry, never rewritten |
 
 One envelope rather than twelve schemas, because a life does not respect area boundaries: a memory has people in it, a document proves a decision, a saving goal is why a someday exists. It also keeps the agent-facing surface small, and agents handle one general shape far better than fifty specific ones.
@@ -125,7 +124,7 @@ Two rules are doing real work:
 - **Every write carries a required `reason`, and the reason becomes the visible tending line.** The trust surface is a by-product of writing rather than a second obligation the agent might forget.
 - **`leave_alone` is a tool, not a no-op.** Restraint is invisible otherwise, and an agent that only shows its edits looks like one that never holds back.
 
-## 9 · Privacy — **partly open**
+## 9 · Privacy — **settled**
 
 Health and money are in scope, so this is stated precisely rather than reassuringly.
 
@@ -136,14 +135,30 @@ Health and money are in scope, so this is stated precisely rather than reassurin
 
 **This project therefore does not claim that your data never leaves your machine.** Under a hosted model that claim would be false, and a privacy claim that is only true in some configurations is not a privacy claim.
 
+### No tiers. The AI sees everything
+
+There are **no `open` / `private` / `sealed` per-entry visibility tiers**, and no area that is invisible to an agent by default. Whatever the connected agent can reach, it can read.
+
+The reasoning matters more than the rule. **Neither a tier nor encryption stops a hosted model retaining what it was already shown.** A tier would therefore sell a safety it cannot deliver, and a false sense of safety is worse than a plainly stated limit.
+
+**The escape hatch is real, and it is the one this specification names:** anyone who wants nothing leaving their machine points OhMyLife at a **local model**, or connects no model at all. That is the only mechanism that actually delivers it.
+
+A three-tier proposal (`open` · `private` · `sealed`, with Body and Money defaulting to `private`) was previously described here. **It is withdrawn**, and nothing is being built against it.
+
+### Data at rest stays readable — no application-level encryption
+
+Entries stay plain Markdown on disk, openable in any text editor. Three reasons:
+
+1. **It is the product's central promise.** A life must outlive the software. Plain Markdown still opens in any editor if this project is abandoned; encrypted files are landfill without the application that wrote them.
+2. **Self-hosted means the operating system already covers this.** Full-disk encryption — FileVault, BitLocker, LUKS — handles the stolen-laptop threat, and handles it better than anything this project would write. **Disk encryption is the operating system's job**, and this document says so rather than implying the application does it.
+3. **The cost is concrete.** Application-level encryption adds key management, a password-recovery story with no good answer, and backup complexity — and it breaks search outright, because the full-text index cannot index what it cannot read.
+
+Encrypting a *single* entry — a passport number, a credential — rather than the whole store is noted as a possible future option. It is **not planned for v1.0**, and nothing should be built assuming it.
+
 **Still open, and marked so deliberately:**
 
-1. Whether sealed-at-rest encryption ships in v1, or whether "it is your own machine" is considered sufficient. *(This changes the storage layer, so it cannot be deferred cheaply.)*
-2. Whether an agent's **reads** are logged and shown the way its writes are.
-3. Whether any area is agent-invisible by default, or whether default-open with per-area revocation is the right shape.
-4. Whether a remote MCP connection is supported at all in v1, or local-only.
-
-The current working proposal is three sensitivity tiers — `open`, `private`, `sealed` — with Body and Money defaulting to `private`, and identity documents `sealed` behind a passphrase the server does not store. **That is a proposal, not a decision, and nothing above should be relied on.**
+1. Whether an agent's **reads** are logged and shown the way its writes are.
+2. **What survives of per-area access grants** now that per-entry tiers are gone. The agent surface still carries `request_access` and reports what an agent may currently read, and §15 still puts every read behind one gate. Whether per-area grants remain as a mechanism of their own is undecided. What is certain either way: **no access policy is enforced today** — the MCP server reports its access state as unenforced — so no document here may describe area permissions as in place.
 
 ## 10 · Whether an AI ships — **open**
 

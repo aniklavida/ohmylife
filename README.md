@@ -93,7 +93,11 @@ Health and money are in scope, so this has to be exact rather than reassuring. T
 
 **If you want nothing to leave your machine, point OhMyLife at a local model — or connect no model at all.** That is the only thing that actually delivers it, so it is what this documentation names rather than a setting that merely implies it.
 
-The detailed access model — which areas an agent may read, what stays sealed, and what requires your explicit yes — is still being decided and is marked as open in the [specification](docs/SPEC.md).
+**There are no privacy tiers.** No per-entry `open` / `private` / `sealed` visibility, no area that hides itself — whatever the agent you connect can reach, it can read. Tiers were considered and rejected: nothing about a tier stops a hosted model retaining what it was already shown, so it would sell a safety it cannot deliver, and a false sense of safety is worse than a stated limit.
+
+**Your files stay plain Markdown on disk. There is no encryption inside the application, and none is planned.** A life has to outlive the software, and encrypted files are landfill without the app that wrote them. On your own machine, full-disk encryption — FileVault, BitLocker, LUKS — already handles the stolen-laptop threat, and handles it better than anything this project would write. **Disk encryption is your operating system's job**, and this README would rather say so than imply the app does it.
+
+What an agent is *granted* — per-area access, and what requires your explicit yes — is still being decided and is marked open in the [specification](docs/SPEC.md). **Nothing gates reads today**, and nothing in this repository pretends otherwise.
 
 ## Bring your own AI
 
