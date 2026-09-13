@@ -7,7 +7,7 @@
 // `archive_entry`'s job, so there is exactly one path that can make an
 // entry disappear from view, and it always carries its own reason.
 import { z } from "zod";
-import { fieldsForKind, type Kind } from "../../lib/entry/schema";
+import { AREAS, KINDS, fieldsForKind, type Kind } from "../../lib/entry/schema";
 import { readEntry } from "../../lib/entry/read";
 import { writeEntry } from "../../lib/entry/write";
 import { recordTending } from "../../lib/tending/record";
@@ -18,11 +18,16 @@ export const name = "update_entry";
 
 const FORBIDDEN_PATCH_KEYS = new Set(["id", "area", "kind", "archived_at", "created_at"]);
 
-// Same field surface as create_entry, minus the fields a patch cannot touch.
-// Re-describing the same shape here would drift from create-entry.ts the
-// first time either one is edited, so this reuses it — but `title` and
-// `source` are required there (a new entry needs both) and must become
-// optional here (a patch only names what it is actually changing).
+// Same field surface as create_entry. Re-describing the same shape here
+// would drift from create-entry.ts the first time either one is edited, so
+// this reuses it wholesale — but `area`, `kind`, `title` and `source` are
+// all *required* there (a new entry needs all four) and must become
+// optional here, since a patch only names what it is actually changing.
+// `area` and `kind` stay *declared*, rather than stripped from the schema
+// entirely, specifically so that a caller who does send one reaches the
+// handler and gets an explicit, readable rejection (FORBIDDEN_PATCH_KEYS
+// below) instead of the MCP layer silently dropping an argument the tool
+// never declared.
 const {
   id: _id,
   area: _area,
@@ -41,6 +46,8 @@ export const config = {
     "Cannot set archived_at — use archive_entry.",
   inputSchema: {
     id: z.string().min(1),
+    area: z.enum(AREAS).optional(),
+    kind: z.enum(KINDS).optional(),
     title: z.string().min(1).max(200).optional(),
     source: z.string().min(1).optional(),
     ...patchableShape,
