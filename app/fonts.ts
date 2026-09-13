@@ -1,9 +1,11 @@
 // Type stack — design brief: "serif display · handwritten script for
 // accents · clean sans for UI labels." Loaded through `next/font/google`,
 // which downloads and self-hosts the font files at build time: the running
-// server serves them from itself and makes no request to Google at runtime,
-// which is what keeps this consistent with docs/SPEC.md §17's "no outbound
-// call of any kind from the server."
+// server serves them from itself and makes no request to Google at runtime.
+// That is what keeps the fonts consistent with docs/SPEC.md §16, where the
+// server "makes no outbound call of its own — except to the provider whose
+// key the user configured in-site (§10), and to nothing else." A font
+// fetched per page view would be a second destination, and would break it.
 import { Caveat, Fraunces, Inter } from "next/font/google";
 
 /** Serif display and body — the warm, retro voice of headlines and prose. */

@@ -53,8 +53,10 @@
 
   /* Type. The Google Fonts self-host by way of `next/font` (app/fonts.ts),
      so the running server makes no font request of its own at runtime —
-     only Next's build step ever talks to Google, consistent with
-     docs/SPEC.md §17's "no outbound call of any kind from the server." */
+     only Next's build step ever talks to Google. docs/SPEC.md §16 allows
+     the server "no outbound call of its own — except to the provider whose
+     key the user configured in-site (§10), and to nothing else", and a
+     font fetched per page view would be exactly such another call. */
   --font-serif: var(--font-fraunces), Georgia, "Iowan Old Style", serif;
   --font-script: var(--font-caveat), "Segoe Script", cursive;
   --font-sans: var(--font-inter), "Segoe UI", sans-serif;
