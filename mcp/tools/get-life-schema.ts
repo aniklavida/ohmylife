@@ -1,7 +1,6 @@
 // `get_life_schema` — called first by any agent, so it discovers the shape
 // of a life (and what it may currently read) rather than guessing. See
 // docs/SPEC.md §8.
-import { z } from "zod";
 import { AREA_FOR_KIND, AREAS, KINDS } from "../../lib/entry/schema";
 
 export const name = "get_life_schema";
