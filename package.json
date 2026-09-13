@@ -16,6 +16,7 @@
     "rebuild-index": "tsx scripts/rebuild-index.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "better-sqlite3": "^13.0.3",
     "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
