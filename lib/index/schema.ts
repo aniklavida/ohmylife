@@ -18,7 +18,6 @@ export const entries = sqliteTable("entries", {
   createdAt: text("created_at"),
   updatedAt: text("updated_at"),
   source: text("source").notNull(),
-  sensitivity: text("sensitivity"),
   archivedAt: text("archived_at"),
   relativePath: text("relative_path").notNull(),
   data: text("data").notNull(),
@@ -49,7 +48,6 @@ export function createIndexSchema(sqlite: Database.Database): void {
       created_at    TEXT,
       updated_at    TEXT,
       source        TEXT NOT NULL,
-      sensitivity   TEXT,
       archived_at   TEXT,
       relative_path TEXT NOT NULL,
       data          TEXT NOT NULL

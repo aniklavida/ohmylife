@@ -77,15 +77,6 @@ export const AREA_FOR_KIND = {
   habit: "habits",
 } as const satisfies Record<Kind, Area>;
 
-export const SENSITIVITIES = ["open", "private", "sealed"] as const;
-export type Sensitivity = (typeof SENSITIVITIES)[number];
-
-/** Body and Money hold health and money data; default them closed rather than open. */
-export const DEFAULT_SENSITIVITY_FOR_AREA: Partial<Record<Area, Sensitivity>> = {
-  body: "private",
-  money: "private",
-};
-
 // "user", "agent:claude", "import:google-photos" — provenance is a closed shape,
 // not free text, so it can be rendered and filtered rather than merely stored.
 const SOURCE_PATTERN = /^(user|agent:[a-z0-9][a-z0-9._-]*|import:[a-z0-9][a-z0-9._-]*)$/i;
@@ -135,6 +126,12 @@ const titleSchema = z
  * Fields every entry carries. `occurred_at` is included here and removed
  * explicitly for `someday` — see `withoutOccurredAt` below — rather than made
  * optional-and-ignored, so the ban is structural rather than a convention.
+ *
+ * There is deliberately no `sensitivity` field: docs/SPEC.md §9 settles that
+ * there are "no `open` / `private` / `sealed` per-entry visibility tiers",
+ * because neither a tier nor encryption stops a hosted model retaining what
+ * it was already shown. Anyone who wants nothing to leave their machine
+ * points OhMyLife at a local model instead.
  */
 const envelopeShape = {
   id: idSchema,
@@ -146,7 +143,6 @@ const envelopeShape = {
   source: sourceSchema,
   confidence: z.number().min(0).max(1).optional(),
   links: z.array(linkSchema).default([]),
-  sensitivity: z.enum(SENSITIVITIES).optional(),
   attachments: z.array(attachmentSchema).default([]),
   // There is no delete tool anywhere in this product (docs/SPEC.md §8). The
   // only removal is archiving, and archiving is only ever this timestamp

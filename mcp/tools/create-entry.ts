@@ -12,7 +12,7 @@
 // anything is written, and the tending line is written from the same value
 // that made the write possible.
 import { z } from "zod";
-import { AREAS, KINDS, SENSITIVITIES, fieldsForKind, type Kind } from "../../lib/entry/schema";
+import { AREAS, KINDS, fieldsForKind, type Kind } from "../../lib/entry/schema";
 import { writeEntry } from "../../lib/entry/write";
 import { recordTending } from "../../lib/tending/record";
 import { resolveLifeRoot, slugify, uniqueId } from "../runtime";
@@ -41,7 +41,6 @@ export const config = {
     source: z.string().min(1),
     confidence: z.number().min(0).max(1).optional(),
     links: z.array(linkShape).optional(),
-    sensitivity: z.enum(SENSITIVITIES).optional(),
     attachments: z.array(z.string()).optional(),
 
     // Per-kind fields — see docs/SPEC.md §7.2. Irrelevant ones for the

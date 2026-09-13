@@ -16,8 +16,9 @@ export const config = {
   title: "Propose",
   description:
     "Suggests a change without making it — for anything that needs the " +
-    "person's yes rather than an agent's judgment (e.g. anything touching " +
-    "a sealed entry, or a change with real consequences). Writes a pending " +
+    "person's yes rather than an agent's judgment (e.g. overwriting words " +
+    "the person wrote themselves, correcting a document's recorded number " +
+    "or expiry date, or any change with real consequences). Writes a pending " +
     "proposal file next to the life; does not modify any entry. There is " +
     "no approval tool yet in this version — a person currently reviews and " +
     "acts on proposals by reading the file directly.",

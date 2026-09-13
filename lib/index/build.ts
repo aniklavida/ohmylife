@@ -51,9 +51,9 @@ export function rebuildIndex(lifeRoot: string, dbPath: string): RebuildResult {
 
     const insertEntry = sqlite.prepare(`
       INSERT INTO entries
-        (id, area, kind, title, occurred_at, created_at, updated_at, source, sensitivity, archived_at, relative_path, data)
+        (id, area, kind, title, occurred_at, created_at, updated_at, source, archived_at, relative_path, data)
       VALUES
-        (@id, @area, @kind, @title, @occurred_at, @created_at, @updated_at, @source, @sensitivity, @archived_at, @relative_path, @data)
+        (@id, @area, @kind, @title, @occurred_at, @created_at, @updated_at, @source, @archived_at, @relative_path, @data)
     `);
     const insertLink = sqlite.prepare(`
       INSERT INTO links (from_id, to_id, type) VALUES (?, ?, ?)
@@ -76,7 +76,6 @@ export function rebuildIndex(lifeRoot: string, dbPath: string): RebuildResult {
           created_at: e.created_at ?? null,
           updated_at: e.updated_at ?? null,
           source: e.source,
-          sensitivity: e.sensitivity ?? null,
           archived_at: e.archived_at ?? null,
           relative_path: relativePath,
           data: JSON.stringify(e),
