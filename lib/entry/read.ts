@@ -33,7 +33,18 @@ export class EntryValidationError extends Error {
   }
 }
 
-/** Recursively lists every markdown file under `rootDir`, sorted for stable output. */
+/**
+ * Recursively lists every markdown file under `rootDir` that is an entry,
+ * sorted for stable output.
+ *
+ * `tended/` is skipped entirely: it holds the tending record and its
+ * proposal/access-request drafts (lib/tending/record.ts, proposals.ts,
+ * access-requests.ts), which are markdown but never entries — they carry no
+ * front matter this schema recognises, because they are a log, not an
+ * envelope. Walking into it would hand each of those files to the entry
+ * parser only to have it fail, which is a validation error for a file that
+ * was never wrong — it was never an entry to begin with.
+ */
 export function walkMarkdownFiles(rootDir: string): string[] {
   const results: string[] = [];
   if (!fs.existsSync(rootDir)) return results;
@@ -45,6 +56,7 @@ export function walkMarkdownFiles(rootDir: string): string[] {
       if (dirent.name.startsWith(".")) continue;
       const full = path.join(dir, dirent.name);
       if (dirent.isDirectory()) {
+        if (dirent.name === "tended" && dir === rootDir) continue;
         stack.push(full);
       } else if (dirent.isFile() && dirent.name.endsWith(".md")) {
         results.push(full);
