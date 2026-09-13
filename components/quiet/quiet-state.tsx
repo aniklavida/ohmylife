@@ -8,10 +8,11 @@ import { Body, Display, Label } from "../primitives/prose";
  * designed first, not last. This is deliberately not an empty state: there
  * is no dimmed illustration, no "you're all caught up!" toast, and the
  * photographic hero and margin annotation below are exactly as considered
- * as any other screen would get. Two failed attempts at this exact screen
- * are recorded in DESIGN_BRIEF.md §10 — both mistook austerity for calm and
- * stripped things away. This one stays warm and full instead: a photograph,
- * a handwritten note, real sentences.
+ * as any other screen would get. The failure mode this screen is designed
+ * against is austerity mistaken for calm — stripping away until what is
+ * left reads as absence, which is how a quiet day ends up looking like a
+ * page that failed to load (docs/SPEC.md §4). It stays warm and full
+ * instead: a photograph, a handwritten note, real sentences.
  */
 export function QuietState() {
   return (

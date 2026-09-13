@@ -203,8 +203,9 @@ export const personSchema = kind("person", {
 export const accountSchema = kind("account", {
   institution: z.string().min(1),
   // Named `account_type` rather than the spec table's bare `kind` — that name
-  // collides with the entry's own `kind` discriminator ("account"). Recorded
-  // as a decision in DECISIONS.md rather than left ambiguous in the schema.
+  // collides with the entry's own `kind` discriminator ("account"). The
+  // rename is deliberate and lives here, so the divergence from the table in
+  // docs/SPEC.md §6 is visible at the field rather than left to be guessed.
   account_type: z.string().min(1),
   // A balance is always a reading with a date, never a live figure — the two
   // fields are required together so one cannot be recorded without the other.

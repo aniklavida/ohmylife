@@ -1,13 +1,14 @@
 // Access requests — an agent asking for an area it may not currently read
-// (docs/SPEC.md §9, "request_access"). Recorded as a plain file for a
+// (docs/SPEC.md §8, "request_access"). Recorded as a plain file for a
 // person to see, the same spirit as proposals.ts.
 //
-// **Honesty note, load-bearing for this card:** no access policy exists yet
-// (lib/access/policy.ts is ROADMAP.md step 3, and the privacy model itself
-// is still pending Anik — see DECISIONS.md). So this file does not grant,
-// deny or gate anything — there is nothing to gate yet. It only guarantees
-// the ask is not lost, and that the response an agent gets back says so
-// plainly rather than implying an access system that is not there.
+// **Honesty note, and it is load-bearing:** no access policy exists yet
+// (lib/access/policy.ts is docs/ROADMAP.md step 3), and docs/SPEC.md §9
+// still lists what survives of per-area grants as an open question. So
+// this file does not grant, deny or gate anything — there is nothing to
+// gate yet. It only guarantees the ask is not lost, and that the response
+// an agent gets back says so plainly rather than implying an access system
+// that is not there.
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";

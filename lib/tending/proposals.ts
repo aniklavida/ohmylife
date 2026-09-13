@@ -1,5 +1,5 @@
 // Proposals — a suggested change that needs the person's yes before it
-// touches anything (docs/SPEC.md §9, "propose"). Unlike the tending log
+// touches anything (docs/SPEC.md §8, "propose"). Unlike the tending log
 // (record.ts), a proposal is not a record of something the agent did; it is
 // a record of something the agent is *asking* to do, so it does not belong
 // in the filed/corrected/left_alone log of completed actions.
@@ -7,11 +7,10 @@
 // A proposal is never applied by this file, or by anything in mcp/. There
 // is no approve/reject tool in this version — reviewing and acting on a
 // proposal is a human action through the website (docs/STRUCTURE.md,
-// `api/tending/`), which does not exist yet. This is recorded as an open
-// decision in this card's report rather than left silently unimplemented:
-// v1 of `propose` guarantees the suggestion survives, in a plain file a
-// person can read, edit or delete by hand; it does not yet guarantee a
-// one-click accept.
+// `api/tending/`), which does not exist yet. That limit is stated here
+// rather than left silently unimplemented: `propose` guarantees the
+// suggestion survives, in a plain file a person can read, edit or delete by
+// hand; it does not yet guarantee a one-click accept.
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";

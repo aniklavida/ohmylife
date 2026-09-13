@@ -39,14 +39,14 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 /**
- * The full-height sidebar — design brief: "Deep forest-green sidebar, full
- * height. Serif wordmark with a small sunrise mark, tagline beneath it.
- * Fine-line icons. A handwritten note at the foot of the nav."
+ * The full-height sidebar: deep forest-green, full height, a serif wordmark
+ * with a small sunrise mark and a tagline beneath it, fine-line icons, and
+ * a handwritten note at the foot of the nav.
  *
- * Every route beyond "/" is built in docs/ROADMAP.md step 5 onward; linking
- * to them now is the sidebar as the reference mockups show it, not a claim
- * that they exist yet — visiting one before then reaches Next's own 404,
- * the same as any other unbuilt route in an in-progress app.
+ * Every route beyond "/" is built in docs/ROADMAP.md step 5 onward. Linking
+ * to them now renders the navigation the product is meant to have, and is
+ * not a claim that they exist yet — visiting one before then reaches Next's
+ * own 404, the same as any other unbuilt route in an in-progress app.
  */
 export function Sidebar() {
   const pathname = usePathname();

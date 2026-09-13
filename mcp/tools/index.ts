@@ -19,14 +19,15 @@ import * as propose from "./propose";
 import * as requestAccess from "./request-access";
 
 export function registerTools(server: McpServer): void {
-  // Read tools — see docs/SPEC.md §9.
+  // Read tools — see docs/SPEC.md §8.
   server.registerTool(getLifeSchema.name, getLifeSchema.config, getLifeSchema.handler);
   server.registerTool(searchLife.name, searchLife.config, searchLife.handler);
   server.registerTool(readEntry.name, readEntry.config, readEntry.handler);
   server.registerTool(listArea.name, listArea.config, listArea.handler);
   server.registerTool(whatsOpen.name, whatsOpen.config, whatsOpen.handler);
 
-  // Write tools — reason is required on every one (docs/DECISIONS.md).
+  // Write tools — every one takes a required `reason`, which becomes the
+  // visible tending line (docs/SPEC.md §8).
   server.registerTool(createEntry.name, createEntry.config, createEntry.handler);
   server.registerTool(updateEntry.name, updateEntry.config, updateEntry.handler);
   server.registerTool(linkEntries.name, linkEntries.config, linkEntries.handler);

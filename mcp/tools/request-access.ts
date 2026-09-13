@@ -1,11 +1,12 @@
 // `request_access` — ask for an area this agent may not currently read
-// (docs/SPEC.md §9). Honesty note, same as get-life-schema.ts: no access
-// policy is implemented yet (ROADMAP.md step 3, DECISIONS.md "Pending
-// Anik"), so every area is already readable. This tool still exists and
-// still records the ask, because an agent should form the habit of asking
-// before the day a policy exists to answer it — but the response says
-// plainly that nothing is being gated in this version, rather than
-// pretending a grant just happened.
+// (docs/SPEC.md §8). Honesty note, same as get-life-schema.ts: no access
+// policy is enforced in this version (docs/ROADMAP.md step 3), so every
+// area is already readable. Whether per-area grants survive as a mechanism
+// at all is one of the questions docs/SPEC.md §9 lists as still open. This
+// tool still exists and still records the ask, because an agent should
+// form the habit of asking before the day a policy exists to answer it —
+// but the response says plainly that nothing is being gated in this
+// version, rather than pretending a grant just happened.
 import { z } from "zod";
 import { AREAS } from "../../lib/entry/schema";
 import { recordAccessRequest } from "../../lib/tending/access-requests";

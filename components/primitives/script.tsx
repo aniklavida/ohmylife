@@ -12,8 +12,8 @@ interface ScriptProps {
 }
 
 /**
- * A handwritten margin annotation — design brief: "these carry the voice,
- * they are not decoration." Every place this is used, the same meaning
+ * A handwritten margin annotation. These carry the product's voice; they
+ * are not decoration. Every place this is used, the same meaning
  * also appears in ordinary prose elsewhere on the screen (see
  * components/quiet/quiet-state.tsx) — the script is the voice, not the
  * only carrier of the information, for a reader whose setup renders it

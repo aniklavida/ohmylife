@@ -1,12 +1,12 @@
 /**
- * A generated stand-in for a photograph — not a photograph itself, and
+ * A drawn stand-in for a photograph — not a photograph itself, and
  * therefore not something that needs a licence. The design calls for real
- * photography (a lamplit reading corner, a sunlit desk — DESIGN_BRIEF.md),
- * but photograph sourcing is a recorded v1 blocker pending Anik's decision
- * (DECISIONS.md: "Photograph sourcing and licensing for the default
- * theme"). Shipping an unlicensed photo, or inventing a licence answer, is
- * exactly what that decision forbids — so this renders drawn shapes, never
- * a downloaded or generated image that could be mistaken for one.
+ * photography here (a lamplit reading corner, a sunlit desk), but
+ * docs/SPEC.md §14 is explicit that an image is not covered by this
+ * repository's MIT licence and that no image ships without its own licence
+ * line. Until a photograph is chosen and licensed, the honest default is
+ * drawn shapes — never a downloaded or generated image that could be
+ * mistaken for a licensed one.
  *
  * It is deliberately flat vector art, not photographic detail, so it reads
  * unambiguously as a placeholder rather than as a real (if low-quality)
@@ -38,8 +38,8 @@ export function PlaceholderScene({ className }: { className?: string }) {
       </defs>
       <rect width="1200" height="800" fill="url(#omlPlaceholderSky)" />
       <rect width="1200" height="800" fill="url(#omlPlaceholderGlow)" />
-      {/* A plant silhouette — "lamplight, photographs, plants, books,
-          handwriting" (DESIGN_BRIEF.md §10, what calm is made of here). */}
+      {/* A plant silhouette. Lamplight, plants, books and handwriting are
+          what calm is made of in this product — not empty space. */}
       <g fill="#1e140c" opacity="0.85">
         <path d="M40 800 C40 620 130 520 108 372 C176 500 198 628 164 800 Z" />
         <path d="M130 800 C142 636 228 552 206 420 C270 536 268 664 236 800 Z" />

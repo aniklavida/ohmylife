@@ -14,19 +14,22 @@ export interface PlateImage {
 export interface PlateProps {
   image: PlateImage;
   /** `card` is reserved for the area cards built in docs/ROADMAP.md step 5;
-   * only `hero` is exercised by this card's quiet state. */
+   * only `hero` is exercised today, by the home route's two states. */
   variant?: "hero" | "card";
   children?: ReactNode;
   className?: string;
 }
 
 /**
- * A photographic surface with text over it — design brief: the hero, and
- * later the area cards. Imagery is a swappable slot, never hard-coded
- * markup: pass `image.src` for a real photograph, or omit it to use the
- * placeholder scene (see DECISIONS.md, "Photograph sourcing and licensing
- * for the default theme" — a v1 blocker this card does not resolve, and
- * does not pretend to).
+ * A photographic surface with text over it — the hero, and later the area
+ * cards. Imagery is a swappable slot, never hard-coded markup: pass
+ * `image.src` for a real photograph, or omit it to fall back to the drawn
+ * placeholder scene (./placeholder-scene.tsx).
+ *
+ * The fallback is not a stub. docs/SPEC.md §14 requires every photograph to
+ * carry its own licence line, since an image is not covered by this
+ * repository's MIT licence — so no photograph ships here until one is
+ * chosen and licensed, and drawn shapes need no such line.
  */
 export function Plate({ image, variant = "hero", children, className }: PlateProps) {
   return (

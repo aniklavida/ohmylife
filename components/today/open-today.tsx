@@ -20,10 +20,10 @@ function humanizeDue(item: OpenItem): string {
 /**
  * A day when something is genuinely open. Deliberately minimal: the full
  * design for a normal day — the life summary, the area cards, the tending
- * panel — is docs/ROADMAP.md step 5, "The place." This card's brief was the
- * quiet state (components/quiet/quiet-state.tsx); this branch exists only
- * so the home route has something truthful to render meanwhile, and it
- * still holds every guilt constraint docs/SPEC.md §15 states: no count of
+ * panel — is docs/ROADMAP.md step 5, "The place." Step 4 designed the quiet
+ * state (components/quiet/quiet-state.tsx); this branch exists only so the
+ * home route has something truthful to render meanwhile, and it still holds
+ * every guilt constraint docs/SPEC.md §13 states: no count of
  * items appears anywhere, and an overdue item is never styled differently
  * from an upcoming one — only the date itself, read plainly, tells them
  * apart.

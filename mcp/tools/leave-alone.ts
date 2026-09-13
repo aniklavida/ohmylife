@@ -1,10 +1,11 @@
 // `leave_alone` — restraint, recorded. Not a no-op: the single most
 // reassuring thing this product can say is "I looked at this and decided
-// not to touch it" (docs/SPEC.md §9, DECISIONS.md), and that sentence does
-// not exist unless something writes it down. This tool changes nothing
-// about the entry itself — it only requires that the entry exist, so an
-// agent cannot claim restraint over something that was never there — and
-// writes a "left_alone" tending line from the reason.
+// not to touch it" (docs/SPEC.md §8, "`leave_alone` is a tool, not a
+// no-op"), and that sentence does not exist unless something writes it
+// down. This tool changes nothing about the entry itself — it only
+// requires that the entry exist, so an agent cannot claim restraint over
+// something that was never there — and writes a "left_alone" tending line
+// from the reason.
 import { z } from "zod";
 import { readEntry } from "../../lib/entry/read";
 import { recordTending } from "../../lib/tending/record";

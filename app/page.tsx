@@ -4,9 +4,9 @@
 // because that is the only way to guarantee it gets designed rather than
 // stubbed behind an `if`. The life summary, the area cards and the tending
 // panel that belong on a normal day in full are docs/ROADMAP.md step 5,
-// "The place" — this route's job for this card was the quiet state, done
-// first and properly; components/today/open-today.tsx is the honest,
-// minimal placeholder for the other branch until that step lands.
+// "The place." Step 4 built the quiet state first and properly;
+// components/today/open-today.tsx is the honest, minimal stand-in for the
+// other branch until step 5 lands.
 import { computeOpenItems } from "../lib/summary/whats-open";
 import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../lib/index/runtime";
 import { QuietState } from "../components/quiet/quiet-state";

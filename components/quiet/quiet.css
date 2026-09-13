@@ -1,7 +1,8 @@
 /* The quiet state — "Nothing needs you today." Warm and full, never
  * austere: a photographic hero, a handwritten margin note, and a closing
- * sentence in ordinary prose. See quiet-state.tsx and DESIGN_BRIEF.md §10
- * for why austerity is exactly what this screen must not be. */
+ * sentence in ordinary prose. See quiet-state.tsx for why austerity is
+ * exactly what this screen must not be: docs/SPEC.md §4 requires that a
+ * quiet day never look like a page that failed to load. */
 
 .quiet-state {
   display: flex;

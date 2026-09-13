@@ -1,11 +1,10 @@
 // `propose` — suggest a change that needs the person's yes (docs/SPEC.md
-// §9). Nothing this tool does ever touches an entry: it writes a pending
+// §8). Nothing this tool does ever touches an entry: it writes a pending
 // proposal file (lib/tending/proposals.ts) and stops there. There is no
 // approve/reject tool in this version of the server — accepting a proposal
 // is a human action through the website, which does not exist yet
-// (docs/STRUCTURE.md, `api/tending/`). That gap is real and is called out
-// in this card's report rather than silently implied by a tool that looks
-// complete.
+// (docs/STRUCTURE.md, `api/tending/`). That gap is stated here rather than
+// silently implied by a tool that looks complete.
 import { z } from "zod";
 import { recordProposal } from "../../lib/tending/proposals";
 import { resolveLifeRoot } from "../runtime";

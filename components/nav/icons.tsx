@@ -1,9 +1,9 @@
 import type { SVGProps } from "react";
 
-// Fine-line nav icons — design brief: "fine-line icons." Hand-drawn as plain
-// stroked SVG rather than pulled from an icon library, so the set matches
-// the product's own hand rather than a generic one. Every icon shares the
-// same 24x24 grid, 1.5px stroke and rounded caps/joins.
+// Fine-line nav icons. Hand-drawn as plain stroked SVG rather than pulled
+// from an icon library, so the set matches the product's own hand rather
+// than a generic one. Every icon shares the same 24x24 grid, 1.5px stroke
+// and rounded caps/joins.
 
 function base(props: SVGProps<SVGSVGElement>): SVGProps<SVGSVGElement> {
   return {

@@ -13,10 +13,10 @@ function classes(base: string, className?: string): string {
 
 type Rest = Omit<ComponentPropsWithoutRef<"p">, "className" | "children">;
 
-// Serif display and body, sans labels — design brief: "serif display ·
-// handwritten script for accents · clean sans for UI labels." Body copy is
-// serif, not sans: it is prose, not chrome. `Label` is the one place sans
-// is reached for outside nav/UI chrome itself.
+// Serif display and body, sans labels. Body copy is serif, not sans: it is
+// prose, not chrome. `Label` is the one place sans is reached for outside
+// nav/UI chrome itself. Handwritten script lives in `Script`, for accents
+// only.
 
 /** A large serif headline — "Nothing needs you today," an area title. */
 export function Display({ children, as: As = "h1", className, ...rest }: ProseProps & Rest) {

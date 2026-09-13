@@ -1,4 +1,4 @@
-// THE test. Everything else in this card exists to make this true:
+// THE test. Everything in the storage layer exists to make this true:
 //
 //   "Deleting the index and rebuilding it loses nothing."
 //

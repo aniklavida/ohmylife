@@ -1,5 +1,5 @@
-// Type stack — design brief: "serif display · handwritten script for
-// accents · clean sans for UI labels." Loaded through `next/font/google`,
+// Type stack — a serif for display and prose, a handwritten script for
+// accents, and a clean sans for UI labels. Loaded through `next/font/google`,
 // which downloads and self-hosts the font files at build time: the running
 // server serves them from itself and makes no request to Google at runtime.
 // That is what keeps the fonts consistent with docs/SPEC.md §16, where the

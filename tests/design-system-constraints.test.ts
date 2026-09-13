@@ -39,12 +39,12 @@ const FORBIDDEN_NAME_PATTERNS: RegExp[] = [
   /\brank(ing)?\b/i,
 ];
 
-describe("the design system cannot grow the guilt mechanics the brief forbids", () => {
+describe("the design system cannot grow the guilt mechanics the spec forbids", () => {
   const files = listAllFiles(COMPONENTS_ROOT);
   const sourceFiles = files.filter((f) => f.endsWith(".tsx") || f.endsWith(".ts"));
   const cssFiles = files.filter((f) => f.endsWith(".css"));
 
-  it("components/ exists and holds this card's primitives", () => {
+  it("components/ exists and holds the design system's primitives", () => {
     expect(files.length).toBeGreaterThan(0);
     expect(sourceFiles.length).toBeGreaterThan(0);
   });
@@ -70,8 +70,8 @@ describe("the design system cannot grow the guilt mechanics the brief forbids", 
   it("no numeric count of open/waiting items is rendered anywhere in a component", () => {
     // "3 things could use you" is fine coming out of the MCP tool
     // (mcp/tools/whats-open.ts) — an agent reading it is not the guilt
-    // mechanic the brief forbids. It must never appear on a page a person
-    // looks at (docs/SPEC.md §15, "no counts or badges").
+    // mechanic the spec forbids. It must never appear on a page a person
+    // looks at (docs/SPEC.md §13, "no counts or badges").
     for (const file of sourceFiles) {
       const text = fs.readFileSync(file, "utf8");
       expect(text).not.toMatch(/\bthings? (could use|need|waiting for) you\b/i);
@@ -89,7 +89,7 @@ describe("the design system cannot grow the guilt mechanics the brief forbids", 
 
   it("no colour declared anywhere in components/ reads as an alert red", () => {
     // A saturated alert red has a red channel far above both green and
-    // blue. The brief's warm accents (terracotta, dusty rose) are warm but
+    // blue. The product's warm accents (terracotta, dusty rose) are warm but
     // muted — their green and blue channels stay much closer to red than
     // an alert red's do — so this check does not just forbid the word
     // "red", it forbids the hue.
