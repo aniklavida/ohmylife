@@ -332,3 +332,17 @@ export function schemaForKind(k: Kind) {
   };
   return schemas[k];
 }
+
+/**
+ * Every field name a given kind's schema accepts — envelope fields plus
+ * that kind's own. Used by the MCP write tools (mcp/tools/create-entry.ts,
+ * update-entry.ts) to keep only the fields relevant to a kind out of a
+ * single, kind-agnostic tool call, without hand-duplicating the field list
+ * anywhere else. Reads the shape directly off the same schema objects
+ * `schemaForKind` returns, so this can never drift from what actually
+ * validates.
+ */
+export function fieldsForKind(k: Kind): string[] {
+  const shape = (schemaForKind(k) as z.ZodObject<z.ZodRawShape>).shape;
+  return Object.keys(shape);
+}
