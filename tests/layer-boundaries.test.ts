@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { stripComments } from "./helpers";
 
 const REPO_ROOT = path.resolve(__dirname, "..");
 
@@ -79,50 +80,6 @@ function listSourceFiles(layer: Layer): string[] {
     }
   }
   return found.sort();
-}
-
-/**
- * Removes comments while leaving string and template literals intact, so a
- * boundary written *about* in a comment is never mistaken for one crossed
- * in code. A regex over raw source would report the prose at the top of
- * this file.
- */
-function stripComments(source: string): string {
-  let out = "";
-  let i = 0;
-  while (i < source.length) {
-    const two = source.slice(i, i + 2);
-    if (two === "//") {
-      while (i < source.length && source[i] !== "\n") i += 1;
-      continue;
-    }
-    if (two === "/*") {
-      i += 2;
-      while (i < source.length && source.slice(i, i + 2) !== "*/") i += 1;
-      i += 2;
-      continue;
-    }
-    const char = source[i] as string;
-    if (char === '"' || char === "'" || char === "`") {
-      out += char;
-      i += 1;
-      while (i < source.length) {
-        const inner = source[i] as string;
-        out += inner;
-        i += 1;
-        if (inner === "\\") {
-          out += source[i] ?? "";
-          i += 1;
-          continue;
-        }
-        if (inner === char) break;
-      }
-      continue;
-    }
-    out += char;
-    i += 1;
-  }
-  return out;
 }
 
 function readSource(repoRelFile: string): string {
