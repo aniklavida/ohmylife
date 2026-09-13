@@ -52,7 +52,7 @@ function oneLine(value: string): string {
   return value.replace(/\s*\n\s*/g, " ").trim();
 }
 
-const BUCKET_LABEL: Record<TendingBucket, string> = {
+export const BUCKET_LABEL: Record<TendingBucket, string> = {
   filed: "Filed",
   corrected: "Corrected",
   left_alone: "Left alone",
@@ -128,4 +128,26 @@ export function readTendingForDate(lifeRoot: string, date: string): WrittenTendi
 /** Every tending record written on `date` — the same day used to write it. */
 export function tendingFilePathFor(lifeRoot: string, date: string): string {
   return path.join(lifeRoot, "tended", `${date}.md`);
+}
+
+/**
+ * The most recent tending lines across every day on file, newest first —
+ * what the home page's tending panel reads (docs/SPEC.md §11). One file per
+ * day means the panel would otherwise have to guess how many days back to
+ * look; instead every day on disk is read and the result is trimmed to
+ * `limit` after sorting, so the panel always shows the most recent activity
+ * regardless of how it happens to be spread across files.
+ */
+export function readRecentTending(lifeRoot: string, limit = 8): WrittenTendingRecord[] {
+  const tendedDir = path.join(lifeRoot, "tended");
+  if (!fs.existsSync(tendedDir)) return [];
+
+  const dates = fs
+    .readdirSync(tendedDir)
+    .filter((name) => /^\d{4}-\d{2}-\d{2}\.md$/.test(name))
+    .map((name) => name.slice(0, "2026-09-13".length));
+
+  const all = dates.flatMap((date) => readTendingForDate(lifeRoot, date));
+  all.sort((a, b) => b.at.localeCompare(a.at));
+  return all.slice(0, limit);
 }

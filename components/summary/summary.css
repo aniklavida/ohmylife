@@ -1,0 +1,23 @@
+/* The life summary — an almanac's opening page, not a scoreboard. A short
+ * list of sentences, no numbers standing alone: every figure that appears
+ * lives inside one of these lines (docs/SPEC.md §12). */
+
+.life-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.life-summary__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.life-summary__line {
+  display: block;
+  max-width: 62ch;
+}

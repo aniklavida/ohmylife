@@ -3,6 +3,9 @@
 @import "../components/nav/nav.css";
 @import "../components/quiet/quiet.css";
 @import "../components/today/today.css";
+@import "../components/summary/summary.css";
+@import "../components/areas/areas.css";
+@import "../components/tending/tending.css";
 
 *,
 *::before,
