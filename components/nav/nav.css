@@ -1,0 +1,110 @@
+/*
+ * The sidebar — design brief: "Deep forest-green sidebar, full height.
+ * Serif wordmark with a small sunrise mark, tagline beneath it. Fine-line
+ * icons. A handwritten note at the foot of the nav."
+ */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vh, 40px);
+  height: 100%;
+  padding: clamp(20px, 3vh, 32px) 20px;
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.sidebar__mark {
+  color: var(--color-accent-ui);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.sidebar__wordmark {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 560;
+  color: var(--color-forest-ink);
+}
+
+.sidebar__tagline {
+  margin: 2px 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--color-forest-ink-muted);
+}
+
+.sidebar__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--color-forest-ink-muted);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.sidebar__link:hover {
+  background: var(--color-forest-strong);
+  color: var(--color-forest-ink);
+}
+
+.sidebar__link--active {
+  background: var(--color-forest-strong);
+  color: var(--color-forest-ink);
+}
+
+.sidebar__link--active .sidebar__icon {
+  color: var(--color-accent-ui);
+}
+
+.sidebar__icon {
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.sidebar__foot {
+  padding-top: 16px;
+  border-top: 1px solid rgba(243, 234, 216, 0.14);
+}
+
+.sidebar__note {
+  margin: 0;
+}
+
+/* The persistent two-column shell — sidebar, then the place you visit. */
+.app-shell {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    height: auto;
+  }
+}
