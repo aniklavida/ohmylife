@@ -42,12 +42,20 @@ themes/        swappable photographs, palettes, type
 skill/         tool-neutral instructions for the user's own agent
 ```
 
-**Rules, all enforced in CI rather than by review:**
+**Rules.** `tests/layer-boundaries.test.ts` walks the import graph on every push and fails the build on a crossing. An import graph cannot see everything these rules say, so where a rule reaches further than the check does, the remainder is named as review rather than left to look enforced.
 
-- **`lib/` is the only code that touches disk.** `app/` and `mcp/` go through it.
+- **`lib/` is the only code that touches disk.** `app/`, `components/`, `mcp/` and `scripts/` go through it.
+  *Checked:* no module outside `lib/` imports a filesystem, SQLite or front-matter module.
+  *Review:* disk opened on your behalf by a dependency you hand a path to. The check reads imports, not behaviour.
 - **`lib/` imports neither `app/` nor `mcp/`.** The moment it does, it stops being core.
+  *Checked in full*, along with the rest of the direction — `mcp/` sees `lib/`; `app/` sees `components/` and `lib/`; `components/` sees `lib/`; nothing sees upward. Relative paths and the `@/` alias both resolve.
 - **Schemas are defined once**, in `lib/entry/schema.ts`. A file format described in three places breaks in two of them — and this is the format someone's life is stored in.
+  *Checked:* `AREAS`, `KINDS`, `AREA_FOR_KIND` and `entrySchema` are declared in that file and nowhere else.
+  *Review:* a second copy of the same format written under different names. Nothing mechanical recognises that.
 - **No delete path exists for an agent, anywhere.** Archiving is the only removal, and it is reversible.
+  *Checked:* no tool is named for removal, `mcp/` has no filesystem module to call, `tests/mcp-server.test.ts` asserts the exact tool list over the wire, and `archive_entry` is shown to leave the file where it was.
+
+`tests/` is outside all of this on purpose: test scaffolding builds and discards throwaway lives, so it opens files directly.
 
 ## The constraints are structural, not stylistic
 
