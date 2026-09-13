@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "rebuild-index": "tsx scripts/rebuild-index.ts"
+    "rebuild-index": "tsx scripts/rebuild-index.ts",
+    "mcp": "tsx mcp/server.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
