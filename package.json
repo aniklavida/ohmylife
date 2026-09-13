@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:sample": "OHMYLIFE_LIFE=examples/sample-life OHMYLIFE_DB=.ohmylife/dev-index.db next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
