@@ -52,8 +52,15 @@ export const KINDS = [
 ] as const;
 export type Kind = (typeof KINDS)[number];
 
-/** Which area each kind belongs to, so `area` and `kind` cannot drift apart. */
-export const AREA_FOR_KIND: Record<Kind, Area> = {
+/**
+ * Which area each kind belongs to, so `area` and `kind` cannot drift apart.
+ *
+ * Declared with `as const satisfies` rather than `: Record<Kind, Area>` so
+ * that indexing it with a generic `K extends Kind` (in `kind()` below) still
+ * yields the specific literal area for that kind, not the widened `Area`
+ * union — otherwise every kind's schema would accept any of the twelve areas.
+ */
+export const AREA_FOR_KIND = {
   memory: "memories",
   person: "people",
   account: "money",
@@ -68,7 +75,7 @@ export const AREA_FOR_KIND: Record<Kind, Area> = {
   project: "projects",
   goal: "goals",
   habit: "habits",
-};
+} as const satisfies Record<Kind, Area>;
 
 export const SENSITIVITIES = ["open", "private", "sealed"] as const;
 export type Sensitivity = (typeof SENSITIVITIES)[number];
@@ -154,7 +161,11 @@ function withoutOccurredAt<T extends Record<string, unknown>>(
   return rest;
 }
 
-function kind<K extends Kind>(name: K, extra: z.ZodRawShape) {
+// `Extra` is its own type parameter (rather than the wider `z.ZodRawShape`
+// annotation on the parameter) so that TypeScript infers each call's actual
+// field names from the argument, instead of erasing them to a generic index
+// signature that would make every per-kind field invisible to callers.
+function kind<K extends Kind, Extra extends z.ZodRawShape>(name: K, extra: Extra) {
   return z
     .object({
       ...envelopeShape,
@@ -167,7 +178,7 @@ function kind<K extends Kind>(name: K, extra: z.ZodRawShape) {
 
 // `someday` never receives `occurred_at` in its shape at all — see the module
 // comment. Every other kind is free to record when it happened or applies.
-function kindWithoutDueDate<K extends Kind>(name: K, extra: z.ZodRawShape) {
+function kindWithoutDueDate<K extends Kind, Extra extends z.ZodRawShape>(name: K, extra: Extra) {
   return z
     .object({
       ...withoutOccurredAt(envelopeShape),
