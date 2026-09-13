@@ -1,7 +1,7 @@
 // `read_entry` — one entry in full, with its links resolved one hop in both
 // directions (a memory's own file only ever declares the outgoing edge; the
 // incoming side is computed by the index — lib/index/links.ts). See
-// docs/SPEC.md §9.
+// docs/SPEC.md §8.
 import { z } from "zod";
 import { readEntry } from "../../lib/entry/read";
 import { resolveLinks } from "../../lib/index/links";

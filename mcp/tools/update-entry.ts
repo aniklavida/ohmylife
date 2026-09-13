@@ -1,4 +1,4 @@
-// `update_entry` — a patch and a required reason (docs/SPEC.md §9). This is
+// `update_entry` — a patch and a required reason (docs/SPEC.md §8). This is
 // the "corrected" half of the tending panel: every call here writes a
 // "corrected" line, because a plain field fix is exactly what that bucket
 // is for. Changing `area`, `kind` or `id` is refused — those define which

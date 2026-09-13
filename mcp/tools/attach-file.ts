@@ -1,5 +1,5 @@
 // `attach_file` — stores an original file beside an entry, never rewritten
-// (docs/SPEC.md §7.1, §9). Accepts either a local path (the common case for
+// (docs/SPEC.md §7.1, §8). Accepts either a local path (the common case for
 // a local, stdio-connected agent that already has filesystem access) or
 // base64 bytes (for a remote agent with no shared filesystem).
 import { z } from "zod";

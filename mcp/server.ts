@@ -1,9 +1,9 @@
 #!/usr/bin/env -S npx tsx
-// The MCP server — the only write path into a life (docs/SPEC.md §9,
+// The MCP server — the only write path into a life (docs/SPEC.md §8,
 // docs/STRUCTURE.md "mcp/ — the only write path"). Stdio by default: no
 // network, no token, the common case for a local agent. Streamable HTTP for
 // a remote agent is deliberately not implemented here — it belongs with the
-// access-and-privacy work in ROADMAP.md step 3, once there is a token and a
+// access-and-privacy work in docs/ROADMAP.md step 3, once there is a token and a
 // policy worth gating it with. Shipping it earlier would be a write path
 // with no guard on it yet.
 //

@@ -1,6 +1,6 @@
 // `whats_open` — what genuinely needs a person right now. "Nothing" is a
 // first-class answer here, not an empty array a model feels obliged to
-// explain away (docs/SPEC.md §9, §15). The actual computation now lives in
+// explain away (docs/SPEC.md §8, §13). The actual computation now lives in
 // lib/summary/whats-open.ts, shared with the website's home route
 // (app/page.tsx) — this file resolves the life's location and formats the
 // MCP-facing response around that shared result.

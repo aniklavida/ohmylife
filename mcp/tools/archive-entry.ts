@@ -1,5 +1,5 @@
 // `archive_entry` — the only removal this product has. There is no delete
-// tool anywhere in the MCP surface, on purpose (docs/SPEC.md §9, §15): an
+// tool anywhere in the MCP surface, on purpose (docs/SPEC.md §8): an
 // agent destroying a memory is unrecoverable and unforgivable, so the only
 // reliable defence is to make deletion unrepresentable here, not merely
 // disallowed. `archiveEntry` (lib/entry/archive.ts) only ever sets a

@@ -1,5 +1,5 @@
 // `list_area` — browse one area with a filter and an order. See docs/SPEC.md
-// §9.
+// §8.
 import { z } from "zod";
 import { AREAS, KINDS } from "../../lib/entry/schema";
 import { listIndexedEntries } from "../../lib/index/query";

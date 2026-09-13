@@ -1,7 +1,7 @@
 /* A day when something is genuinely open — deliberately minimal; see
  * open-today.tsx for why. Every row is styled identically regardless of
  * whether the item is overdue or upcoming: no colour, weight or badge
- * marks one differently from the other (docs/SPEC.md §15). */
+ * marks one differently from the other (docs/SPEC.md §13). */
 
 .open-today {
   display: flex;

@@ -2,9 +2,9 @@
 // the MCP `whats_open` tool (mcp/tools/whats-open.ts) and the website's home
 // route (app/page.tsx), so the two front doors onto the life core
 // (docs/ARCHITECTURE.md) never disagree about what counts as open. "Nothing"
-// is a first-class answer here (docs/SPEC.md §9), and an overdue item is
+// is a first-class answer here (docs/SPEC.md §8), and an overdue item is
 // never marked differently from an upcoming one — there is no visual
-// escalation over time (docs/SPEC.md §15) — both start in this one place,
+// escalation over time (docs/SPEC.md §13) — both start in this one place,
 // not only in whichever surface happens to render them.
 import { listIndexedEntries } from "../index/query";
 import type { Entry } from "../entry/schema";

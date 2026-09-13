@@ -1,6 +1,6 @@
 // `search_life` — one search across everything an agent may read. FTS5
 // under the hood (lib/index/search.ts); this file only resolves the life
-// root, refreshes the index and shapes the result. See docs/SPEC.md §9.
+// root, refreshes the index and shapes the result. See docs/SPEC.md §8.
 import { z } from "zod";
 import { AREAS } from "../../lib/entry/schema";
 import { searchLife } from "../../lib/index/search";

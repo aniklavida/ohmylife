@@ -1,4 +1,4 @@
-// `link_entries` — add or remove a typed edge (docs/SPEC.md §7.3, §9). The
+// `link_entries` — add or remove a typed edge (docs/SPEC.md §7.3, §8). The
 // edge is written only on the `from` side, on disk — the reverse direction
 // is the index's job to compute (lib/index/links.ts), never a second write
 // to the target's file. Both directions still exist as ids in this life
