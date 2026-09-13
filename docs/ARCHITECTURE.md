@@ -87,7 +87,7 @@ The connected agent runs outside this system. Whatever it reads goes wherever th
 
 No architectural choice here changes that, and the design does not pretend otherwise. What it can do is make the boundary visible: the tending record shows what the agent did with what it read, and per-area grants — **planned, not implemented, and not enforced today** — would let the user say which areas it may reach at all.
 
-This is why the documentation separates **the server's guarantee** (stores locally, no telemetry, no update check — and, with an in-site provider key configured, outbound calls to that one provider and to nothing else; planned for v1.0, to be tested in both configurations) from **the agent's behaviour** (outside our control). Merging those two into one comforting sentence would be the single most damaging untrue claim this project could make.
+This is why the documentation separates **the server's guarantee** (stores locally, no telemetry, no update check — and, with an in-site provider key configured, outbound calls to that one provider and to nothing else; the unkeyed configuration is asserted by a test today, the keyed one is planned for v1.0 along with the path itself) from **the agent's behaviour** (outside our control). Merging those two into one comforting sentence would be the single most damaging untrue claim this project could make.
 
 ## 7 · Themes are data
 
@@ -105,7 +105,13 @@ The structural tests are not coverage — each one guards a promise:
 | No agent delete path exists | An agent cannot destroy a memory |
 | `someday` cannot take a date | Someday carries no guilt |
 | No badge, ring or content-state red in the component library | No guilt mechanics, structurally |
-| Zero outbound calls with no provider key configured, and calls only to that provider with one | The privacy claim is a claim, not an intention |
+| No outbound call from the running server, with no provider key configured | Half the privacy claim is a claim and not an intention |
 | `lib/` imports neither `app/` nor `mcp/` | One core, and the rules live in one place |
 
 Every one of them is the kind of rule that a contributor who has not read the documentation would otherwise break in good faith. Documentation cannot stop that. A failing build can.
+
+**Two things the egress row does not say, deliberately.**
+
+The other half of that sentence — *with* a key, calls to that provider and to nothing else — is **planned for v1.0, and untested.** The in-site key path has no implementation to test yet, and a test written against nothing would be exactly the false green this table exists to prevent. It belongs beside the first assertion when that path lands.
+
+And **the build is not the server.** `app/fonts.ts` loads its three families through `next/font/google`, which downloads them from Google during `next build` and self-hosts the files it gets — which is why the running server serves fonts from itself and makes no font request. The download is real, though: `next build` fails outright with no route to `fonts.googleapis.com`, so this repository cannot be built offline. Turbopack makes that request natively rather than through Node, where nothing a test can intercept will observe it, so the test asserts it from the source and pins it to the single file responsible.
