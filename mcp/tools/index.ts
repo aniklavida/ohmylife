@@ -4,10 +4,20 @@
 // list (rather than an auto-discovered directory scan) means the product's
 // entire agent-facing surface is readable without running anything.
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import * as getLifeSchema from "./get-life-schema";
+import * as searchLife from "./search-life";
+import * as readEntry from "./read-entry";
+import * as listArea from "./list-area";
+import * as whatsOpen from "./whats-open";
 
-export function registerTools(_server: McpServer): void {
-  // Tools are added here as they are built, one at a time:
-  //   read tools     — get_life_schema, search_life, read_entry, list_area, whats_open
-  //   write tools    — create_entry, update_entry, link_entries, attach_file, archive_entry
-  //   trust tools    — leave_alone, propose, request_access
+export function registerTools(server: McpServer): void {
+  // Read tools — see docs/SPEC.md §9.
+  server.registerTool(getLifeSchema.name, getLifeSchema.config, getLifeSchema.handler);
+  server.registerTool(searchLife.name, searchLife.config, searchLife.handler);
+  server.registerTool(readEntry.name, readEntry.config, readEntry.handler);
+  server.registerTool(listArea.name, listArea.config, listArea.handler);
+  server.registerTool(whatsOpen.name, whatsOpen.config, whatsOpen.handler);
+
+  // Write tools    — create_entry, update_entry, link_entries, attach_file, archive_entry
+  // Trust tools    — leave_alone, propose, request_access
 }
