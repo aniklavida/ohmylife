@@ -2,7 +2,7 @@
 
 **Status: draft. Nothing in this document is implemented.** Every capability described here is planned.
 
-Two questions are marked **Open** and are genuinely undecided. They are not omissions.
+The two questions this document used to mark **Open** — the privacy model (§9) and whether an AI ships (§10) — are now decided. What remains open is marked so deliberately and is not an omission.
 
 ## 1 · What it is
 
@@ -160,17 +160,28 @@ Encrypting a *single* entry — a passport number, a credential — rather than 
 1. Whether an agent's **reads** are logged and shown the way its writes are.
 2. **What survives of per-area access grants** now that per-entry tiers are gone. The agent surface still carries `request_access` and reports what an agent may currently read, and §15 still puts every read behind one gate. Whether per-area grants remain as a mechanism of their own is undecided. What is certain either way: **no access policy is enforced today** — the MCP server reports its access state as unenforced — so no document here may describe area permissions as in place.
 
-## 10 · Whether an AI ships — **open**
+## 10 · Both connection paths ship — **settled**
 
-| | Bring your own agent | An agent ships |
+Two products were hiding behind one repository. Both ship, and neither is a fallback for the other:
+
+- **In-site BYOK.** The user pastes their own provider key into the OhMyLife website, and the built-in assistant works there. Nobody without an agent is locked out.
+- **An MCP server.** OhMyLife exposes its own MCP server, so any MCP client connects to it directly. Connecting an agent the user already runs costs them nothing extra, and remains the primary path.
+
+Both are **planned for v1.0**, and neither is released.
+
+The trade-off that was weighed, kept for the record:
+
+| | Bring your own agent only | A built-in assistant as well |
 |---|---|---|
 | Who can use it | People already running an MCP-capable AI | Anyone who can run a container |
-| What the project maintains | A server and a website | Also prompts, model compatibility, and support for output quality it does not control |
+| What the project maintains | A server and a website | Also the assistant's plumbing and a support surface for output quality it does not control |
 | The risk | A smaller audience; the product looks inert without an agent | The project inherits blame for a model's bad day |
 
-The working proposal is **bring-your-own-agent for v1**, with a shipped tool-neutral *skill* that tells whichever agent you already run how to tend a life well — keeping the maintenance surface at one protocol and the "no API key, no second subscription" promise intact, while still making a first session guided rather than blank.
+**No model is hosted by this project.** BYOK means the user's key and the user's provider; the second column's maintenance burden is accepted for the plumbing, never for the model.
 
-**This is not decided.** It determines whether the product is usable by anyone who does not already run an agent.
+A shipped tool-neutral *skill* — markdown that tells whichever agent the user already runs how to tend a life well — remains the plan for the MCP path, so a first session is guided rather than blank.
+
+**The consequence for §9:** the in-site key is what makes the server itself capable of an outbound call. That is why §9 narrows the privacy claim instead of promising zero egress.
 
 ## 11 · Making the upkeep visible
 
@@ -246,7 +257,7 @@ Next.js, App Router.
 
 **The website is read-mostly by design.** It renders; it does not maintain. A handful of human actions exist — undo a tending line, grant or revoke an area, swap a theme, archive something — and that is close to the whole interactive surface. If the website grows a full editor, the product has quietly become the thing it was built to replace.
 
-**One core, two front doors.** The server and the website both go through the core; neither touches disk. Otherwise the rules that keep `someday` dateless and habits streakless exist in two places and drift apart.
+**One core, two front doors.** The server and the website both go through the core; neither touches disk. The website's own assistant — the in-site BYOK path (§10) — is a third caller of the core, and the only component that makes an outbound provider call. Otherwise the rules that keep `someday` dateless and habits streakless exist in two places and drift apart.
 
 ## 16 · Self-hosting
 

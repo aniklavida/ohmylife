@@ -47,7 +47,7 @@ The honest cost is drift: two representations can disagree. The resolution is fi
 
 ## 2 · One core, two front doors
 
-`lib/` is the only code that touches disk. The MCP server and the website both go through it, and neither reaches past it.
+`lib/` is the only code that touches disk. The MCP server and the website both go through it, and neither reaches past it. The website's own assistant — the in-site key path, planned for v1.0 — is a third caller of `lib/` and the only component that makes an outbound provider call.
 
 Without that rule, the rules that make `someday` dateless, habits streakless and deletion impossible would exist in two places and drift apart. With it, they exist once, in the schema, and every path inherits them.
 

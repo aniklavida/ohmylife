@@ -6,7 +6,7 @@ One useful, complete release, then maintenance driven by real issues and real de
 
 Positioning, the area set, the constraints, the folder structure and the visual direction are agreed and recorded.
 
-**Two questions must be answered before step 3 can finish:** the privacy model, and whether an AI ships with the product. Both are marked open in the [specification](SPEC.md). Neither blocks steps 1 and 2.
+**The two questions that had to be answered before step 3 can finish are now answered:** the privacy model (no tiers, no encryption at rest) and how an AI connects (both an MCP server and an in-site provider key). Both are recorded in the [specification](SPEC.md). What remains open there — whether per-area grants survive — is narrower, and step 3 is where it lands.
 
 **Done:** no unresolved product contradiction remains.
 

@@ -2,7 +2,7 @@
 
 **A self-hosted home for your whole life. Your AI keeps it current. You just visit.**
 
-Memories, people, money, body, papers, decisions, someday — alongside the ordinary tasks, projects, goals, habits and areas. You host it. You connect whichever AI you already run over [MCP](https://modelcontextprotocol.io). It does the filing.
+Memories, people, money, body, papers, decisions, someday — alongside the ordinary tasks, projects, goals, habits and areas. You host it. You connect whichever AI you already run over [MCP](https://modelcontextprotocol.io) — or paste your own provider key into the site itself. It does the filing.
 
 > **Pre-implementation.** This repository currently contains the product specification, architecture and structure. **There is no working release yet, and nothing described below is implemented.** Every capability is planned.
 
@@ -99,11 +99,14 @@ Health and money are in scope, so this has to be exact rather than reassuring. T
 
 What an agent is *granted* — per-area access, and what requires your explicit yes — is still being decided and is marked open in the [specification](docs/SPEC.md). **Nothing gates reads today**, and nothing in this repository pretends otherwise.
 
-## Bring your own AI
+## Two ways to connect an AI
 
-One protocol, any client — Claude, Codex, Gemini, or anything else that speaks MCP. No API key to paste into this app, no second subscription, and no decision by us about which model you are allowed to use.
+Both are planned for v1.0, and neither is a fallback for the other:
 
-The honest half of that: **the quality of the filing is your model's, not ours.** This app is a place and a protocol; what travels over it is whatever your agent produces. Nothing has been measured, because nothing is built yet.
+- **Connect the agent you already run.** OhMyLife is itself an MCP server, so Claude Code, Codex, opencode or anything else that speaks [MCP](https://modelcontextprotocol.io) connects to it directly. No second subscription, and no decision by us about which model you are allowed to use. This is the primary path, and it costs you nothing extra.
+- **Or paste your own key into the site.** Add a provider key in OhMyLife itself and the built-in assistant works there, so nobody without an agent is locked out. It is your key and your provider — **this project hosts no model.** The trade is in the privacy section above: a configured key is what makes the server itself call out.
+
+The honest half of that: **the quality of the filing is your model's, not ours.** This app is a place and a protocol; what travels over it is whatever your agent produces. Nothing has been measured.
 
 ## Themes are photographs you can swap
 
