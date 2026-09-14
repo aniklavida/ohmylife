@@ -111,21 +111,37 @@ function savingProgress(rows: Row[]): string | undefined {
   return `${best.saved.toLocaleString("en-US")} has been set aside toward ${best.title.toLowerCase()} so far.`;
 }
 
+/** What an observation is about — lets the page give each its own heading. */
+export type ObservationTheme = "people" | "thread" | "date" | "savings";
+
+export interface Observation {
+  theme: ObservationTheme;
+  sentence: string;
+}
+
 /**
  * The life summary: the few true things composed above, in order of how
- * personal they read, capped so the panel stays a handful of sentences
+ * personal they read, capped so the page stays a handful of sentences
  * rather than a report. An empty array is a valid, honest result — a life
  * with nothing yet to observe gets no summary rather than an invented one.
  */
-export function composeLifeSummary(dbPath: string, now: Date = new Date()): string[] {
+export function composeObservations(dbPath: string, now: Date = new Date()): Observation[] {
   const rows = listIndexedEntries(dbPath).filter((row) => !row.entry.archived_at);
-  const candidates = [
-    driftingPerson(rows, now),
-    recurringThread(dbPath, rows),
-    nearestDate(rows, now),
-    savingProgress(rows),
-  ].filter((line): line is string => Boolean(line));
-  return candidates.slice(0, MAX_OBSERVATIONS);
+  const candidates: [ObservationTheme, string | undefined][] = [
+    ["people", driftingPerson(rows, now)],
+    ["thread", recurringThread(dbPath, rows)],
+    ["date", nearestDate(rows, now)],
+    ["savings", savingProgress(rows)],
+  ];
+  return candidates
+    .filter((candidate): candidate is [ObservationTheme, string] => Boolean(candidate[1]))
+    .map(([theme, sentence]) => ({ theme, sentence }))
+    .slice(0, MAX_OBSERVATIONS);
+}
+
+/** The same observations as plain sentences. */
+export function composeLifeSummary(dbPath: string, now: Date = new Date()): string[] {
+  return composeObservations(dbPath, now).map((observation) => observation.sentence);
 }
 
 export interface AreaSummary {

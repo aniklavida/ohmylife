@@ -11,7 +11,7 @@ import { OpenToday } from "../components/today/open-today";
 import { QuietState } from "../components/quiet/quiet-state";
 import { TendingPanel } from "../components/tending/tending-panel";
 import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../lib/index/runtime";
-import { composeAreaCards, composeLifeSummary } from "../lib/summary/compose";
+import { composeAreaCards, composeObservations } from "../lib/summary/compose";
 import { computeOpenItems } from "../lib/summary/whats-open";
 import { readRecentTending } from "../lib/tending/record";
 
@@ -26,15 +26,16 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const lifeRoot = resolveLifeRoot();
   const dbPath = ensureFreshIndex(lifeRoot, resolveDbPath());
+  const today = new Date();
 
-  const items = computeOpenItems(dbPath);
-  const summaryLines = composeLifeSummary(dbPath);
-  const areaCards = composeAreaCards(dbPath);
+  const items = computeOpenItems(dbPath, today);
+  const observations = composeObservations(dbPath, today);
+  const areaCards = composeAreaCards(dbPath, today);
   const tending = readRecentTending(lifeRoot);
 
   return (
     <>
-      <LifeSummary lines={summaryLines} />
+      <LifeSummary observations={observations} today={today} />
       {items.length === 0 ? <QuietState /> : <OpenToday items={items} />}
       <AreaCardGrid cards={areaCards} />
       <TendingPanel records={tending} />

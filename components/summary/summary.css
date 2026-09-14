@@ -1,23 +1,134 @@
-/* The life summary — an almanac's opening page, not a scoreboard. A short
- * list of sentences, no numbers standing alone: every figure that appears
- * lives inside one of these lines (docs/SPEC.md §12). */
+/* The life summary — an almanac's opening spread, not a scoreboard. A
+ * masthead over a double rule, the day in words, one observation set large
+ * with a drop cap and the rest in a column beside it. Every figure lives
+ * inside a sentence, set in old-style numerals (docs/SPEC.md §12). */
 
-.life-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.almanac {
+  position: relative;
+  padding: clamp(22px, 3.6vw, 44px) clamp(20px, 3.6vw, 48px) clamp(30px, 4vw, 48px);
+  background: var(--color-print);
+  border-radius: 6px;
+  box-shadow: var(--shadow-print);
 }
 
-.life-summary__list {
+.almanac__masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 24px;
+  padding-bottom: 12px;
+  border-bottom: 4px double var(--color-rule);
+}
+
+.almanac__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 480;
+  font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.2rem);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.almanac__dateline {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.almanac__spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 56px);
+  padding-top: clamp(20px, 3vw, 30px);
+}
+
+.almanac__spread--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.almanac__heading {
+  margin: 0 0 8px;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.almanac__lead {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 1.1rem + 1.9vw, 2.7rem);
+  font-weight: 430;
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  text-wrap: pretty;
+}
+
+.almanac__lead::first-letter {
+  float: left;
+  margin: 0.04em 0.02em 0 -0.02em;
+  font-size: 3.05em;
+  font-weight: 600;
+  line-height: 0.8;
+  color: var(--color-accent-text);
+}
+
+.almanac__notes {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 clamp(20px, 3vw, 40px);
+  border-left: 1px solid var(--color-rule-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
-.life-summary__line {
-  display: block;
-  max-width: 62ch;
+.almanac__note + .almanac__note {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--color-rule-soft);
+}
+
+.almanac__sentence {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+  line-height: 1.45;
+  color: var(--color-ink);
+  text-wrap: pretty;
+}
+
+.almanac__figure {
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-style: italic;
+  color: var(--color-accent-text);
+}
+
+.almanac__margin {
+  position: absolute;
+  right: clamp(18px, 3.4vw, 44px);
+  bottom: -0.55em;
+  padding: 0 10px;
+  background: var(--color-bg);
+  border-radius: 999px;
+}
+
+@media (max-width: 760px) {
+  .almanac__spread {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .almanac__notes {
+    padding: 20px 0 0;
+    border-left: none;
+    border-top: 1px solid var(--color-rule-soft);
+  }
 }

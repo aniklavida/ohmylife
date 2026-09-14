@@ -8,10 +8,16 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { AreaCardGrid } from "../components/areas/area-card";
-import { LifeSummary } from "../components/summary/life-summary";
+import { almanacDateline, LifeSummary } from "../components/summary/life-summary";
 import { TendingPanel } from "../components/tending/tending-panel";
 import { rebuildIndex } from "../lib/index/build";
-import { composeAreaCards, composeLifeSummary, sentenceForArea } from "../lib/summary/compose";
+import {
+  composeAreaCards,
+  composeLifeSummary,
+  composeObservations,
+  type Observation,
+  sentenceForArea,
+} from "../lib/summary/compose";
 import type { WrittenTendingRecord } from "../lib/tending/record";
 import { cleanupDir, EXAMPLE_LIFE_ROOT, makeTempDir } from "./helpers";
 
@@ -153,17 +159,74 @@ describe("the AreaCard component", () => {
   });
 });
 
-describe("the LifeSummary component", () => {
-  it("renders every line it is given", () => {
-    const html = renderToStaticMarkup(
-      createElement(LifeSummary, { lines: ["A true thing about a quiet week."] }),
-    );
-    expect(html).toContain("A true thing about a quiet week.");
+describe("the life summary's observations know what they are about", () => {
+  const root = makeTempDir("place-observations");
+  const dbPath = `${root}/index.db`;
+  rebuildIndex(EXAMPLE_LIFE_ROOT, dbPath);
+  const observations = composeObservations(dbPath, NOW);
+  const lines = composeLifeSummary(dbPath, NOW);
+  cleanupDir(root);
+
+  it("tags each true observation with its subject, in the same order as the sentences", () => {
+    expect(observations.map((o) => o.theme)).toEqual(["people", "date", "savings"]);
+    expect(observations.map((o) => o.sentence)).toEqual(lines);
+  });
+});
+
+describe("the life summary, set as an almanac spread", () => {
+  const today = new Date("2026-09-14T10:00:00Z");
+  const observations: Observation[] = [
+    { theme: "people", sentence: "You haven't properly caught up with Nani in a long while." },
+    { theme: "date", sentence: "Dentist check-up is the one thing with a real deadline, on September 20." },
+    { theme: "savings", sentence: "420,000 has been set aside toward down payment on a flat so far." },
+  ];
+  const html = renderToStaticMarkup(createElement(LifeSummary, { observations, today }));
+  const text = html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&");
+
+  it("renders every observation it is given, each under its own heading", () => {
+    expect(text).toContain("You haven't properly caught up with Nani in a long while.");
+    expect(text).toContain("Of people");
+    expect(text).toContain("Of the calendar");
+    expect(text).toContain("Of savings");
   });
 
-  it("renders nothing at all for an empty summary, rather than an empty panel shell", () => {
-    const html = renderToStaticMarkup(createElement(LifeSummary, { lines: [] }));
-    expect(html).toBe("");
+  it("sets the first observation large and the rest beside it", () => {
+    expect(html).toMatch(/class="almanac__lead">You haven/);
+    expect(html.match(/class="almanac__note /g)).toHaveLength(2);
+  });
+
+  it("keeps every figure inside its sentence — the sentence reads whole once the markup is gone", () => {
+    expect(text).toContain("420,000 has been set aside toward down payment on a flat so far.");
+    expect(text).toContain("on September 20.");
+    expect(html).toContain('<span class="almanac__figure">420,000</span> has been set aside');
+  });
+
+  it("heads the page with the day in words, so no figure stands on its own", () => {
+    expect(almanacDateline(today)).toBe("Monday, the fourteenth of September");
+    const outsideSentences = text.replace(/[^.]*\d[^.]*\./g, "");
+    expect(outsideSentences).not.toMatch(/\d/);
+  });
+
+  it("carries no score, grade, ranking, percentage or better-or-worse comparison", () => {
+    expect(text).not.toMatch(
+      /%|\bpercent\b|\bout of\b|\bscore\b|\bgrade\b|\brank(ing)?\b|\bbetter\b|\bworse\b|\bthan last\b/i,
+    );
+  });
+
+  it("lays out a single true observation as a whole spread, rather than padding it", () => {
+    const single = renderToStaticMarkup(
+      createElement(LifeSummary, { observations: [observations[2] as Observation], today }),
+    );
+    expect(single).toContain("almanac__spread--single");
+    expect(single).not.toContain("almanac__note");
+  });
+
+  it("renders nothing at all when there is nothing true to say yet", () => {
+    expect(renderToStaticMarkup(createElement(LifeSummary, { observations: [], today }))).toBe("");
   });
 });
 
