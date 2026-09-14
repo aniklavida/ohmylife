@@ -116,6 +116,36 @@ describe("the MCP server, over a real client", () => {
     });
   });
 
+  it("list_area works identically for an area with no per-area special casing anywhere, including the newest kind", async () => {
+    const { body } = await callJson(client, "list_area", { area: "habits" });
+    expect(body.count).toBe(1);
+    expect(body.entries[0]).toMatchObject({ id: "morning-walk", kind: "habit" });
+  });
+
+  it("create_entry works for the area kind through the same generic tool every other kind uses", async () => {
+    const { isError, body } = await callJson(client, "create_entry", {
+      area: "areas",
+      kind: "area",
+      title: "Money",
+      description: "The accounts, the obligations, the saving goals — kept together on purpose.",
+      body: "Grouping these under one area was Rumi's suggestion, actually.",
+      source: "agent:claude",
+      reason: "User asked for a broad area to group the money-related entries under.",
+    });
+    expect(isError).toBe(false);
+    expect(body.entry.kind).toBe("area");
+    expect(body.entry.description).toContain("kept together on purpose");
+
+    const { body: listed } = await callJson(client, "list_area", { area: "areas" });
+    const ids = listed.entries.map((e: { id: string }) => e.id).sort();
+    expect(ids).toEqual(["family", "health", "home", "money"]);
+
+    // The body is indexed the same way any other kind's body is — no
+    // per-kind carve-out in the search path either.
+    const { body: found } = await callJson(client, "search_life", { query: "suggestion" });
+    expect(found.results.map((r: { id: string }) => r.id)).toContain("money");
+  });
+
   it("create_entry refuses a call with no reason before the handler ever runs", async () => {
     const { isError, text } = await callJson(client, "create_entry", {
       area: "someday",
@@ -142,7 +172,9 @@ describe("the MCP server, over a real client", () => {
 
     const today = new Date().toISOString().slice(0, 10);
     const records = readTendingForDate(lifeRoot, today);
-    const record = records.find((r) => r.tool === "create_entry");
+    const record = records.find(
+      (r) => r.tool === "create_entry" && r.entryId === "call-the-bank-about-the-failed-auto-debit",
+    );
     expect(record).toMatchObject({
       bucket: "filed",
       entryId: "call-the-bank-about-the-failed-auto-debit",

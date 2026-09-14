@@ -56,7 +56,7 @@ describe("rebuilding the index loses nothing", () => {
     const result = rebuildIndex(EXAMPLE_LIFE_ROOT, dbPath);
 
     expect(result.errors).toEqual([]);
-    expect(result.entryCount).toBe(15);
+    expect(result.entryCount).toBe(23);
     expect(result.linkCount).toBe(4);
   });
 

@@ -251,30 +251,118 @@ function somedaySentence(rows: Row[]): string {
   return `${earliest.title} is still on the list, no rush.`;
 }
 
+function tasksSentence(rows: Row[]): string {
+  if (rows.length === 0) return "Nothing filed here yet.";
+  const open = rows.filter((r) => field(r.entry, "state") !== "done");
+
+  let nearest: { row: Row; at: Date } | undefined;
+  for (const row of open) {
+    const raw = field(row.entry, "due");
+    if (typeof raw !== "string") continue;
+    const at = toComparableDate(raw);
+    if (!at) continue;
+    if (!nearest || at.getTime() < nearest.at.getTime()) nearest = { row, at };
+  }
+  if (nearest) return `${nearest.row.title} is due ${formatLongDate(nearest.at)}.`;
+
+  if (open.length > 0) {
+    const latest = [...open].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+    return `${latest.title} is still open, whenever there's time.`;
+  }
+
+  const latestDone = [...rows].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+  return `${latestDone.title} was the last thing finished here.`;
+}
+
+function projectsSentence(rows: Row[]): string {
+  if (rows.length === 0) return "Nothing filed here yet.";
+  const active = rows.filter((r) => field(r.entry, "status") === "active");
+  if (active.length > 0) {
+    const latest = [...active].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+    return `${latest.title} is under way.`;
+  }
+  const latest = [...rows].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+  return `${latest.title} is the last one worked on here.`;
+}
+
+function goalsSentence(rows: Row[], now: Date): string {
+  if (rows.length === 0) return "Nothing filed here yet.";
+  let nearest: { row: Row; at: Date } | undefined;
+  for (const row of rows) {
+    const raw = field(row.entry, "target_date");
+    if (typeof raw !== "string") continue;
+    const at = toComparableDate(raw);
+    if (!at || at.getTime() < now.getTime()) continue;
+    if (!nearest || at.getTime() < nearest.at.getTime()) nearest = { row, at };
+  }
+  if (nearest) return `${nearest.row.title} is aimed at ${formatLongDate(nearest.at)}.`;
+  const latest = [...rows].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+  return `${latest.title} is still the aim, no date attached.`;
+}
+
+function habitsSentence(rows: Row[]): string {
+  if (rows.length === 0) return "Nothing filed here yet.";
+  let mostRecent: { row: Row; at: Date } | undefined;
+  for (const row of rows) {
+    const occurrences = field(row.entry, "occurrences");
+    if (!Array.isArray(occurrences) || occurrences.length === 0) continue;
+    for (const raw of occurrences) {
+      if (typeof raw !== "string") continue;
+      const at = new Date(raw);
+      if (Number.isNaN(at.getTime())) continue;
+      if (!mostRecent || at.getTime() > mostRecent.at.getTime()) mostRecent = { row, at };
+    }
+  }
+  if (mostRecent) return `${mostRecent.row.title} was kept most recently on ${formatLongDate(mostRecent.at)}.`;
+  const latest = [...rows].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+  return `${latest.title} is being kept, nothing logged yet.`;
+}
+
+function areasSentence(rows: Row[]): string {
+  if (rows.length === 0) return "Nothing filed here yet.";
+  const latest = [...rows].sort((a, b) => createdAt(b) - createdAt(a))[0] as Row;
+  const description = field(latest.entry, "description");
+  return typeof description === "string" && description.length > 0
+    ? `${latest.title} — ${description}`
+    : `${latest.title} is one of the areas being kept.`;
+}
+
+const SENTENCE_FOR: Record<Area, (rows: Row[], now: Date) => string> = {
+  memories: (rows) => memoriesSentence(rows),
+  people: (rows, now) => peopleSentence(rows, now),
+  money: (rows, now) => moneySentence(rows, now),
+  body: (rows, now) => bodySentence(rows, now),
+  papers: (rows, now) => papersSentence(rows, now),
+  decisions: (rows) => decisionsSentence(rows),
+  someday: (rows) => somedaySentence(rows),
+  tasks: (rows) => tasksSentence(rows),
+  projects: (rows) => projectsSentence(rows),
+  goals: (rows, now) => goalsSentence(rows, now),
+  habits: (rows) => habitsSentence(rows),
+  areas: (rows) => areasSentence(rows),
+};
+
+/**
+ * One human sentence for a single area — never a count, per docs/SPEC.md §6
+ * ("Area cards … a human sentence — never a count"). Works for any of the
+ * twelve areas, not only the seven the home page shows cards for
+ * (`composeAreaCards` below), so an area browsed directly (`/areas/[area]`)
+ * always gets a real sentence rather than an empty hero.
+ */
+export function sentenceForArea(dbPath: string, area: Area, now: Date = new Date()): string {
+  const rows = listIndexedEntries(dbPath).filter(
+    (row) => row.area === area && !row.entry.archived_at,
+  );
+  return SENTENCE_FOR[area](rows, now);
+}
+
 /**
  * One human sentence per area — never a count, per docs/SPEC.md §6 ("Area
- * cards … a human sentence — never a count"). Each area reads its own kinds
- * of entry; the result is always a real sentence, including the honest
- * "nothing here yet" for an area with no entries at all.
+ * cards … a human sentence — never a count"). Limited to the seven areas
+ * that make this a life rather than a productivity system: the home page's
+ * area-card grid is reviewed at exactly this set and order, and changing
+ * that is a design decision, not an engineering one.
  */
 export function composeAreaCards(dbPath: string, now: Date = new Date()): AreaSummary[] {
-  const rows = listIndexedEntries(dbPath).filter((row) => !row.entry.archived_at);
-  const byArea = (area: Area) => rows.filter((row) => row.area === area);
-
-  const sentenceFor: Record<Area, () => string> = {
-    memories: () => memoriesSentence(byArea("memories")),
-    people: () => peopleSentence(byArea("people"), now),
-    money: () => moneySentence(byArea("money"), now),
-    body: () => bodySentence(byArea("body"), now),
-    papers: () => papersSentence(byArea("papers"), now),
-    decisions: () => decisionsSentence(byArea("decisions")),
-    someday: () => somedaySentence(byArea("someday")),
-    tasks: () => "Nothing filed here yet.",
-    projects: () => "Nothing filed here yet.",
-    goals: () => "Nothing filed here yet.",
-    habits: () => "Nothing filed here yet.",
-    areas: () => "Nothing filed here yet.",
-  };
-
-  return AREA_CARD_ORDER.map((area) => ({ area, sentence: sentenceFor[area]() }));
+  return AREA_CARD_ORDER.map((area) => ({ area, sentence: sentenceForArea(dbPath, area, now) }));
 }

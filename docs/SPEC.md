@@ -57,7 +57,7 @@ Every item in every area shares one envelope and adds typed fields per kind.
 |---|---|
 | `id` | Stable, human-readable, never reused |
 | `area` | One of the twelve |
-| `kind` | `memory` · `person` · `account` · `obligation` · `saving_goal` · `appointment` · `measurement` · `document` · `decision` · `someday` · `task` · `project` · `goal` · `habit` |
+| `kind` | `memory` · `person` · `account` · `obligation` · `saving_goal` · `appointment` · `measurement` · `document` · `decision` · `someday` · `task` · `project` · `goal` · `habit` · `area` |
 | `title` | One line |
 | `body` | Markdown. Optional |
 | `occurred_at` | When it happened or applies. May be fuzzy: `2019`, `2019-06`, `summer 2019` |
@@ -83,7 +83,10 @@ One envelope rather than twelve schemas, because a life does not respect area bo
 | `decision` | `chose`, `rejected[]`, `because`, `would_change_my_mind`, optional `revisit_after` |
 | `someday` | `note` only. **Structurally cannot hold a due date** |
 | `task` | optional `due`, `state`, optional `for_project` |
+| `project` | optional `description`, `status`, optional `for_goal` |
+| `goal` | optional `description`, optional `target_date` |
 | `habit` | `occurrences[]` — timestamps only. **No streak field exists** |
+| `area` | optional `description` — a broad, ongoing area of responsibility (Health, Family, Home), not one of the twelve data areas above |
 
 Three of those are product decisions expressed as types: a balance is a dated reading, someday cannot hold a date, and habits have no streak. Each is enforced by the schema, because a convention that lives only in documentation gets violated by the first person who has not read it.
 

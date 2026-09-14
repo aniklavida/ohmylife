@@ -138,6 +138,39 @@ describe("area and kind cannot drift apart", () => {
   });
 });
 
+describe("the area kind — a broad area of responsibility, not one of the twelve data areas", () => {
+  it("accepts an area entry with only a description", () => {
+    const result = entrySchema.safeParse({
+      ...base,
+      area: "areas",
+      kind: "area",
+      description: "Sleep, the dentist, the ordinary maintenance of a body.",
+      source: "user",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts an area entry with no description at all", () => {
+    const result = entrySchema.safeParse({
+      ...base,
+      area: "areas",
+      kind: "area",
+      source: "user",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("refuses an area entry filed under a different area", () => {
+    const result = entrySchema.safeParse({
+      ...base,
+      area: "someday",
+      kind: "area",
+      source: "user",
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
 describe("title is one line", () => {
   it("refuses a title containing a newline", () => {
     const result = entrySchema.safeParse({

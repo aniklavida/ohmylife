@@ -4,7 +4,7 @@ import { Body, Display, Heading, Label } from "../../../components/primitives/pr
 import { AREAS, type Area } from "../../../lib/entry/schema";
 import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../../../lib/index/runtime";
 import { listIndexedEntries } from "../../../lib/index/query";
-import { composeAreaCards } from "../../../lib/summary/compose";
+import { sentenceForArea } from "../../../lib/summary/compose";
 
 const AREA_LABEL: Record<string, string> = {
   memories: "Memories",
@@ -37,8 +37,7 @@ export default async function AreaPage({ params }: { params: Promise<{ area: str
   const rows = listIndexedEntries(dbPath)
     .filter((row) => row.area === typedArea && !row.entry.archived_at)
     .sort((a, b) => a.title.localeCompare(b.title));
-  const cards = composeAreaCards(dbPath);
-  const sentence = cards.find((card) => card.area === typedArea)?.sentence ?? "";
+  const sentence = sentenceForArea(dbPath, typedArea);
 
   return (
     <section className="area-page" aria-labelledby="area-page-heading">

@@ -49,6 +49,7 @@ export const KINDS = [
   "project",
   "goal",
   "habit",
+  "area",
 ] as const;
 export type Kind = (typeof KINDS)[number];
 
@@ -75,6 +76,7 @@ export const AREA_FOR_KIND = {
   project: "projects",
   goal: "goals",
   habit: "habits",
+  area: "areas",
 } as const satisfies Record<Kind, Area>;
 
 // "user", "agent:claude", "import:google-photos" — provenance is a closed shape,
@@ -290,6 +292,14 @@ export const habitSchema = kind("habit", {
   occurrences: z.array(timestampSchema).default([]),
 });
 
+// A broad, ongoing area of responsibility — "Health", "Family", "Home" — not
+// one of the twelve data areas, but a life-organising label a project, goal
+// or task can eventually point at. Deliberately thin: it exists to be named
+// and described, not to carry its own due dates or status.
+export const areaSchema = kind("area", {
+  description: z.string().min(1).optional(),
+});
+
 export const entrySchema = z.discriminatedUnion("kind", [
   memorySchema,
   personSchema,
@@ -305,6 +315,7 @@ export const entrySchema = z.discriminatedUnion("kind", [
   projectSchema,
   goalSchema,
   habitSchema,
+  areaSchema,
 ]);
 
 export type Entry = z.infer<typeof entrySchema>;
@@ -326,6 +337,7 @@ export function schemaForKind(k: Kind) {
     project: projectSchema,
     goal: goalSchema,
     habit: habitSchema,
+    area: areaSchema,
   };
   return schemas[k];
 }

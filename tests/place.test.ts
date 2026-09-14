@@ -11,7 +11,7 @@ import { AreaCardGrid } from "../components/areas/area-card";
 import { LifeSummary } from "../components/summary/life-summary";
 import { TendingPanel } from "../components/tending/tending-panel";
 import { rebuildIndex } from "../lib/index/build";
-import { composeAreaCards, composeLifeSummary } from "../lib/summary/compose";
+import { composeAreaCards, composeLifeSummary, sentenceForArea } from "../lib/summary/compose";
 import type { WrittenTendingRecord } from "../lib/tending/record";
 import { cleanupDir, EXAMPLE_LIFE_ROOT, makeTempDir } from "./helpers";
 
@@ -78,6 +78,57 @@ describe("area cards, one human sentence per area", () => {
   });
 
   cleanupDir(root);
+});
+
+describe("an area sentence works for every one of the twelve areas, not only the home page's seven", () => {
+  // Tasks, Projects, Goals, Habits and Areas get no card on the home page
+  // (that grid is docs/ROADMAP.md step 5's reviewed design, at exactly the
+  // seven areas above), but `/areas/[area]` still needs a real sentence for
+  // each of them — this is what makes every area readable through the same
+  // area-agnostic code, with no per-area special casing left unbuilt.
+  const root = makeTempDir("place-remaining-areas");
+  const dbPath = `${root}/index.db`;
+  rebuildIndex(EXAMPLE_LIFE_ROOT, dbPath);
+  const tasksLine = sentenceForArea(dbPath, "tasks", NOW);
+  const projectsLine = sentenceForArea(dbPath, "projects", NOW);
+  const goalsLine = sentenceForArea(dbPath, "goals", NOW);
+  const habitsLine = sentenceForArea(dbPath, "habits", NOW);
+  const areasLine = sentenceForArea(dbPath, "areas", NOW);
+  const cards = composeAreaCards(dbPath, NOW);
+  cleanupDir(root);
+
+  it("names the nearest open task by its due date", () => {
+    expect(tasksLine).toBe("Photograph the first ten recipe pages is due September 25.");
+  });
+
+  it("names the active project", () => {
+    expect(projectsLine).toBe("Digitise Ammu's handwritten recipes is under way.");
+  });
+
+  it("names the goal by its target date", () => {
+    expect(goalsLine).toBe("Cook through Ammu's recipe notebook is aimed at June 30.");
+  });
+
+  it("names the habit by when it was last kept, never by a streak or a count", () => {
+    expect(habitsLine).toBe("Morning walk was kept most recently on September 14.");
+    expect(habitsLine).not.toMatch(/\bstreak\b|\b\d+\s+days?\b/i);
+  });
+
+  it("names the most recently kept area of responsibility, with its description", () => {
+    expect(areasLine).toBe("Home — Wherever this ends up being, and the ordinary upkeep of it.");
+  });
+
+  it("still returns the same seven-card home grid, unaffected by the other five areas existing", () => {
+    expect(cards.map((c) => c.area)).toEqual([
+      "memories",
+      "people",
+      "money",
+      "body",
+      "papers",
+      "decisions",
+      "someday",
+    ]);
+  });
 });
 
 describe("the AreaCard component", () => {
