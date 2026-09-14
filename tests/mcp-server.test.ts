@@ -10,7 +10,9 @@ import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { readEntry } from "../lib/entry/read";
 import { readTendingForDate } from "../lib/tending/record";
+import { undoTendingRecord } from "../lib/tending/undo";
 import { cleanupDir, EXAMPLE_LIFE_ROOT, makeTempDir } from "./helpers";
 
 const REPO_ROOT = path.resolve(__dirname, "..");
@@ -298,6 +300,33 @@ describe("the MCP server, over a real client", () => {
     const today = new Date().toISOString().slice(0, 10);
     const records = readTendingForDate(lifeRoot, today);
     expect(records.some((r) => r.tool === "update_entry" && r.bucket === "corrected")).toBe(true);
+  });
+
+  it("update_entry captures the previous value on the tending line, and a real undo restores it exactly", async () => {
+    const before = readEntry(lifeRoot, "city-bank-savings");
+    const previousBalance = (before?.entry as { balance?: number } | undefined)?.balance;
+    expect(previousBalance).toBeTypeOf("number");
+
+    await callJson(client, "update_entry", {
+      id: "city-bank-savings",
+      balance: 999999,
+      balance_as_of: "2026-09-14",
+      reason: "Statement corrected the September figure.",
+    });
+
+    const today = new Date().toISOString().slice(0, 10);
+    const records = readTendingForDate(lifeRoot, today);
+    const record = records.find(
+      (r) => r.tool === "update_entry" && r.bucket === "corrected" && r.entryId === "city-bank-savings",
+    );
+    expect(record?.revert).toMatchObject({ balance: previousBalance });
+
+    expect(record).toBeTruthy();
+    const undone = undoTendingRecord(lifeRoot, record!.relativePath, record!.at);
+    expect(undone.ok).toBe(true);
+
+    const after = readEntry(lifeRoot, "city-bank-savings");
+    expect((after?.entry as { balance?: number } | undefined)?.balance).toBe(previousBalance);
   });
 
   it("leave_alone writes only a tending line and never touches the entry file", async () => {

@@ -82,8 +82,17 @@ export async function handler(args: Record<string, unknown> & { id: string; reas
   const kind = existing.entry.kind as Kind;
   const allowedKeys = new Set(fieldsForKind(kind));
   const merged: Record<string, unknown> = { ...existing.entry };
+  // Captured before anything changes, so an undo (lib/tending/undo.ts) can
+  // restore the exact previous state rather than guess at one. `null` marks
+  // a field that had no previous value at all — distinct from JSON simply
+  // dropping an `undefined` key, which an undo could not tell apart from
+  // "leave this field alone."
+  const revert: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(patch)) {
-    if (allowedKeys.has(key) && value !== undefined) merged[key] = value;
+    if (!allowedKeys.has(key) || value === undefined) continue;
+    const previous = (existing.entry as Record<string, unknown>)[key];
+    revert[key] = previous === undefined ? null : previous;
+    merged[key] = value;
   }
 
   const written = writeEntry(lifeRoot, merged as never);
@@ -94,6 +103,7 @@ export async function handler(args: Record<string, unknown> & { id: string; reas
     entryId: written.entry.id,
     summary: `Corrected "${written.entry.title}".`,
     reason,
+    revert: Object.keys(revert).length > 0 ? revert : undefined,
   });
 
   const body = { entry: written.entry, relative_path: written.relativePath };
