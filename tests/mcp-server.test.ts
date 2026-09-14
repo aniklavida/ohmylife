@@ -146,6 +146,24 @@ describe("the MCP server, over a real client", () => {
     expect(found.results.map((r: { id: string }) => r.id)).toContain("money");
   });
 
+  it("every write tool refuses a call with no reason — an agent that writes without a reason cannot write at all", async () => {
+    const casesMissingReason: { name: string; args: Record<string, unknown> }[] = [
+      { name: "create_entry", args: { area: "someday", kind: "someday", title: "No reason", source: "user" } },
+      { name: "update_entry", args: { id: "rumi", title: "Rumi" } },
+      { name: "archive_entry", args: { id: "rumi" } },
+      { name: "leave_alone", args: { id: "rumi" } },
+      { name: "link_entries", args: { from: "rumi", to: "nani", type: "mentions" } },
+      { name: "attach_file", args: { id: "rumi", filename: "note.txt", source_path: __filename } },
+      { name: "propose", args: { id: "rumi", patch: { title: "Rumi" } } },
+      { name: "request_access", args: { area: "body" } },
+    ];
+    for (const { name: toolName, args } of casesMissingReason) {
+      const { isError, text } = await callJson(client, toolName, args);
+      expect({ toolName, isError }).toEqual({ toolName, isError: true });
+      expect(text ?? "").toMatch(/reason/i);
+    }
+  });
+
   it("create_entry refuses a call with no reason before the handler ever runs", async () => {
     const { isError, text } = await callJson(client, "create_entry", {
       area: "someday",
