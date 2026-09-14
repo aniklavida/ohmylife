@@ -74,10 +74,13 @@
   /* Paper tape holding a print or a note to the page. */
   --color-tape: rgba(214, 188, 142, 0.72);
 
-  /* The plum banner's own inks, each measured against --color-plum. */
+  /* The plum banner's own inks. Measured in both themes on --color-plum and
+     on the glow at its strongest point: the title and body inks clear 4.5:1
+     on both, and the hand-written sign, set large, clears 3:1. The glow is
+     kept faint enough that this holds wherever it falls behind the words. */
   --color-plum-ink-muted: #e8d2db;
   --color-plum-accent: #f4bc98;
-  --color-plum-glow: rgba(217, 131, 86, 0.38);
+  --color-plum-glow: rgba(217, 131, 86, 0.24);
   --shadow-print: 0 1px 0 rgba(120, 84, 40, 0.12), 0 16px 32px -20px rgba(70, 42, 16, 0.5);
 
   /* Scene palette — the drawn scenes (components/scenes/) read only these.
