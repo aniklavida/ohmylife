@@ -2,10 +2,10 @@
  * Drawn scenes — one per area of a life, plus the room the home page opens
  * on. Each is a small, specific picture of what that area *is*: an album
  * under a lamp for Memories, two cups on a table for People, a jar of coins
- * for Money. They stand in the image slot a photograph will fill once a
- * theme supplies one (docs/SPEC.md §14): `Plate` renders a scene only when
- * it has no `image.src`, so a licensed photograph replaces a drawing with no
- * other change.
+ * for Money. They are what an image slot shows when it has no photograph —
+ * neither the person's own nor a default image for that area: `Plate`
+ * renders a scene only when it has no `image.src`, so a photograph replaces
+ * a drawing with no other change.
  *
  * Every colour comes from the scene tokens in tokens.css, never from a hex
  * value in this file. That is what lets the same drawing read as a sunlit

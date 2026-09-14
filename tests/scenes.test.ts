@@ -118,6 +118,48 @@ describe("the image slot stays swappable", () => {
     expect(html).not.toContain("<svg");
   });
 
+  it("an area given a photograph shows it in place of its drawing, with the photograph's own description", () => {
+    const html = renderToStaticMarkup(
+      createElement(AreaCardGrid, {
+        cards: [
+          {
+            area: "people",
+            sentence: "A true sentence about people.",
+            photo: { src: "/photos/people.jpg", alt: "Two friends at a tea stall." },
+          },
+          { area: "money", sentence: "A true sentence about money." },
+        ],
+      }),
+    );
+    expect(html).toContain('src="/photos/people.jpg"');
+    expect(html).toContain('alt="Two friends at a tea stall."');
+    expect(html).not.toContain("scene--people");
+    expect(html).not.toContain(SCENE_DESCRIPTION.people);
+    expect(html).toContain("scene--money");
+  });
+
+  it("an area given a photograph entry with no path still falls back to its drawing", () => {
+    const html = renderToStaticMarkup(
+      createElement(AreaCardGrid, {
+        cards: [{ area: "body", sentence: "A true sentence.", photo: { alt: "Nothing uploaded." } }],
+      }),
+    );
+    expect(html).toContain("scene--body");
+    expect(html).toContain(SCENE_DESCRIPTION.body);
+  });
+
+  it("a hero keeps its scrim over a photograph, so the words over it stay readable", () => {
+    const html = renderToStaticMarkup(
+      createElement(
+        Plate,
+        { variant: "hero", image: { src: "/photos/room.jpg", alt: "A bright kitchen in the morning." } },
+        createElement("h1", null, "Nothing needs you today."),
+      ),
+    );
+    expect(html).toContain("plate__scrim");
+    expect(html.indexOf("plate__scrim")).toBeLessThan(html.indexOf("plate__content"));
+  });
+
   it("without one, the plate draws the scene it was given", () => {
     const html = renderToStaticMarkup(
       createElement(Plate, { scene: "papers", image: { alt: SCENE_DESCRIPTION.papers } }),

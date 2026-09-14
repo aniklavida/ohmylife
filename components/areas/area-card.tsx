@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { AreaSummary } from "../../lib/summary/compose";
-import { Plate } from "../primitives/plate";
+import { Plate, type PlateImage } from "../primitives/plate";
 import { Body, Heading } from "../primitives/prose";
 import { Script } from "../primitives/script";
 import { SCENE_DESCRIPTION, sceneForArea } from "../scenes/scenes";
@@ -26,19 +26,26 @@ const AREA_NOTE: Record<string, string> = {
   someday: "no date, no guilt",
 };
 
+export interface AreaCardProps extends AreaSummary {
+  /** This area's photograph, when there is one — the person's own photo, or
+   * else the default image for the area. Without one, its drawn scene. */
+  photo?: PlateImage;
+}
+
 /**
- * One area, as a print pinned to the page: its own picture, a hand-written
- * note of what it holds, and a human sentence — never a count
- * (docs/SPEC.md §6). The sentence comes from `lib/summary/compose.ts`,
- * composed from that area's own entries, not written here.
+ * One area, as a print pinned to the page: its picture, a hand-written note
+ * of what it holds, and a human sentence — never a count (docs/SPEC.md §6).
+ * The sentence comes from `lib/summary/compose.ts`, composed from that
+ * area's own entries, not written here.
  */
-export function AreaCard({ area, sentence }: AreaSummary) {
+export function AreaCard({ area, sentence, photo }: AreaCardProps) {
   const label = AREA_LABEL[area] ?? area;
   const scene = sceneForArea(area);
   const note = AREA_NOTE[area];
+  const image: PlateImage = photo?.src ? photo : { alt: SCENE_DESCRIPTION[scene] };
   return (
     <Link href={`/areas/${area}`} className={`area-card area-card--${area}`}>
-      <Plate variant="print" scene={scene} image={{ alt: SCENE_DESCRIPTION[scene] }} />
+      <Plate variant="print" scene={scene} image={image} />
       <div className="area-card__caption">
         <Heading as="h3" className="area-card__title">
           {label}
@@ -54,7 +61,7 @@ export function AreaCard({ area, sentence }: AreaSummary) {
   );
 }
 
-export function AreaCardGrid({ cards }: { cards: AreaSummary[] }) {
+export function AreaCardGrid({ cards }: { cards: AreaCardProps[] }) {
   return (
     <div className="area-card-grid" role="list" aria-label="Areas of your life">
       {cards.map((card) => (

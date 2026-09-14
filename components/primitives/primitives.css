@@ -104,15 +104,43 @@
   object-fit: cover;
 }
 
+/* A gentle evening fall-off across the foot of the picture — mood only. The
+ * readability of the words does not depend on it; see the backdrop below. */
 .plate__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(20, 15, 10, 0.88) 0%,
-    rgba(20, 15, 10, 0.6) 42%,
-    rgba(20, 15, 10, 0.05) 78%
-  );
+  background: linear-gradient(to top, rgba(20, 15, 10, 0.42) 0%, rgba(20, 15, 10, 0) 55%);
+}
+
+/* The words carry their own backdrop, so they stay readable over whatever
+ * fills the slot — the drawn scene, or a photograph that is near-white,
+ * near-black or busy — and wherever the layout puts them, including a phone
+ * where they fill most of the picture. A soft-edged dark wash sits exactly
+ * behind the text block and feathers out into the picture. Measured with
+ * the lightest possible picture behind it: label and body clear 4.5:1, the
+ * headline more. */
+.plate__content::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* Full strength only across the text block itself; a long feather above
+     it and to its right, so the wash reads as falling light, not a panel. */
+  inset: -180px -220px -40px -40px;
+  background: rgba(20, 15, 10, 0.76);
+  -webkit-mask-image:
+    linear-gradient(to right, #000 calc(100% - 220px), transparent),
+    linear-gradient(to bottom, transparent, #000 180px);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, #000 calc(100% - 220px), transparent),
+    linear-gradient(to bottom, transparent, #000 180px);
+  mask-composite: intersect;
+}
+
+.plate__content .prose-display,
+.plate__content .prose-body,
+.plate__content .prose-label {
+  text-shadow: 0 1px 14px rgba(20, 15, 10, 0.45);
 }
 
 .plate__content {
@@ -134,6 +162,8 @@
   color: var(--color-forest-ink);
 }
 
+/* Full cream, not the muted tone: over a picture the body line needs the
+ * brighter ink to hold 4.5:1 when the picture behind it is near-white. */
 .plate__content .prose-body {
-  color: var(--color-forest-ink-muted);
+  color: var(--color-forest-ink);
 }

@@ -138,10 +138,22 @@
     grid-row: span 2;
   }
 
+  /* The large print keeps its picture's proportions rather than stretching
+   * to the height of the two rows beside it — like a polaroid, the extra
+   * falls to the paper, and the caption sits at its foot. */
   .area-card--memories .plate--print {
-    aspect-ratio: auto;
-    flex: 1 1 auto;
-    min-height: 320px;
+    aspect-ratio: 5 / 4;
+  }
+
+  .area-card--memories .area-card__caption {
+    margin-top: auto;
+  }
+
+  .area-card-grid__item--people .plate--print,
+  .area-card-grid__item--money .plate--print,
+  .area-card-grid__item--body .plate--print,
+  .area-card-grid__item--papers .plate--print {
+    aspect-ratio: 16 / 11;
   }
 
   .area-card--memories .area-card__title {

@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { Scene, type SceneName } from "../scenes/scenes";
 
 export interface PlateImage {
-  /** Path or URL to a real, licensed photograph. Omit to show the drawn
-   * scene instead (../scenes/scenes.tsx). */
+  /** Path to a photograph for this slot — the person's own photo, or the
+   * default image for it. Omit to show the drawn scene instead
+   * (../scenes/scenes.tsx). */
   src?: string;
   /** Required either way — the photograph's description, or the drawn
    * scene's. Read by a screen reader even though the drawing itself is
@@ -25,13 +26,15 @@ export interface PlateProps {
 
 /**
  * A picture surface — the hero, and each area's print. Imagery is a
- * swappable slot, never hard-coded markup: pass `image.src` for a real
- * photograph, or omit it and the drawn scene for this slot is shown.
+ * swappable slot, never hard-coded markup. What fills it, in order: the
+ * person's own photograph, else the default image for that slot, else the
+ * drawn scene. Resolving which of those exists happens before this
+ * component; it only ever draws the scene when it is handed no `src`.
  *
- * The drawing is not a stub. docs/SPEC.md §14 requires every photograph to
- * carry its own licence line, since an image is not covered by this
- * repository's MIT licence — so no photograph ships here until a theme
- * supplies one with its licence, and drawn shapes need no such line.
+ * Every layout built on a plate is meant to hold a real photograph — very
+ * dark, very light or busy — without any change: a `print` keeps its words
+ * on paper beside the picture, and a `hero` keeps them on a scrim shaped for
+ * the lightest picture it could be given.
  */
 export function Plate({ image, scene = "room", variant = "hero", children, className }: PlateProps) {
   return (

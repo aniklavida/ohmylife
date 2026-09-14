@@ -96,14 +96,16 @@
   color: var(--color-plum-accent);
 }
 
+/* A sprig drawn large across the banner's lower half, so the space between
+ * its words and its signature is a picture rather than a gap. */
 .closing-banner__sprig {
   position: absolute;
-  right: -6px;
-  bottom: -8px;
-  width: clamp(120px, 14vw, 170px);
+  right: -14px;
+  bottom: -18px;
+  width: min(62%, 280px);
   height: auto;
   color: var(--color-plum-accent);
-  opacity: 0.4;
+  opacity: 0.32;
 }
 
 .closing-banner__stem {
