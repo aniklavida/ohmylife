@@ -1,37 +1,39 @@
 import type { ReactNode } from "react";
-import { PlaceholderScene } from "./placeholder-scene";
+import { Scene, type SceneName } from "../scenes/scenes";
 
 export interface PlateImage {
-  /** Path or URL to a real, licensed photograph. Omit to fall back to the
-   * built-in placeholder scene (./placeholder-scene.tsx). */
+  /** Path or URL to a real, licensed photograph. Omit to show the drawn
+   * scene instead (../scenes/scenes.tsx). */
   src?: string;
-  /** Required either way — either the real photograph's description, or a
-   * plain statement that this is a placeholder. Read by a screen reader
-   * even when the placeholder graphic itself is hidden from one. */
+  /** Required either way — the photograph's description, or the drawn
+   * scene's. Read by a screen reader even though the drawing itself is
+   * hidden from one. */
   alt: string;
 }
 
 export interface PlateProps {
   image: PlateImage;
-  /** `card` is reserved for the area cards built in docs/ROADMAP.md step 5;
-   * only `hero` is exercised today, by the home route's two states. */
-  variant?: "hero" | "card";
+  /** Which drawing fills the slot while no photograph is supplied. */
+  scene?: SceneName;
+  /** `hero` carries text over the picture behind a scrim. `print` is the
+   * picture alone, like a photograph pinned to the page — its caption sits
+   * outside it, on paper. */
+  variant?: "hero" | "print";
   children?: ReactNode;
   className?: string;
 }
 
 /**
- * A photographic surface with text over it — the hero, and later the area
- * cards. Imagery is a swappable slot, never hard-coded markup: pass
- * `image.src` for a real photograph, or omit it to fall back to the drawn
- * placeholder scene (./placeholder-scene.tsx).
+ * A picture surface — the hero, and each area's print. Imagery is a
+ * swappable slot, never hard-coded markup: pass `image.src` for a real
+ * photograph, or omit it and the drawn scene for this slot is shown.
  *
- * The fallback is not a stub. docs/SPEC.md §14 requires every photograph to
+ * The drawing is not a stub. docs/SPEC.md §14 requires every photograph to
  * carry its own licence line, since an image is not covered by this
- * repository's MIT licence — so no photograph ships here until one is
- * chosen and licensed, and drawn shapes need no such line.
+ * repository's MIT licence — so no photograph ships here until a theme
+ * supplies one with its licence, and drawn shapes need no such line.
  */
-export function Plate({ image, variant = "hero", children, className }: PlateProps) {
+export function Plate({ image, scene = "room", variant = "hero", children, className }: PlateProps) {
   return (
     <div className={["plate", `plate--${variant}`, className].filter(Boolean).join(" ")}>
       {image.src ? (
@@ -41,11 +43,11 @@ export function Plate({ image, variant = "hero", children, className }: PlatePro
         <img className="plate__image" src={image.src} alt={image.alt} />
       ) : (
         <>
-          <PlaceholderScene className="plate__placeholder" />
+          <Scene name={scene} className="plate__scene" />
           <span className="sr-only">{image.alt}</span>
         </>
       )}
-      <div className="plate__scrim" aria-hidden="true" />
+      {variant === "print" ? null : <div className="plate__scrim" aria-hidden="true" />}
       {children ? <div className="plate__content">{children}</div> : null}
     </div>
   );

@@ -71,8 +71,7 @@
 /* Plate -------------------------------------------------------------------
  * A photographic surface with text over it. The scrim is load-bearing, not
  * decorative: it is what keeps overlaid text at AA contrast regardless of
- * how light the image underneath is — measured against this placeholder's
- * own brightest stop, comfortably clear of the AA minimum. */
+ * how light the picture underneath is, drawn scene or photograph alike. */
 
 .plate {
   position: relative;
@@ -88,15 +87,16 @@
   align-items: flex-end;
 }
 
-.plate--card {
-  min-height: 260px;
-  display: flex;
-  align-items: flex-end;
-  border-radius: var(--radius-card);
+/* The picture alone, like a photograph printed and pinned to the page. Its
+ * caption sits outside it, on paper, so no text ever has to fight the image. */
+.plate--print {
+  aspect-ratio: 4 / 3;
+  border-radius: 3px;
+  box-shadow: none;
 }
 
 .plate__image,
-.plate__placeholder {
+.plate__scene {
   position: absolute;
   inset: 0;
   width: 100%;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plate } from "../../components/primitives/plate";
 import { Body, Display, Heading, Label } from "../../components/primitives/prose";
+import { SCENE_DESCRIPTION } from "../../components/scenes/scenes";
 import { TendingRecordList } from "../../components/tending/tending-record-list";
 import { resolveLifeRoot } from "../../lib/index/runtime";
 import { groupTendingByDay, groupTendingByWeek } from "../../lib/tending/group";
@@ -24,10 +25,7 @@ export default async function TendedPage({
 
   return (
     <section className="tended-page" aria-labelledby="tended-page-heading">
-      <Plate
-        variant="hero"
-        image={{ alt: "A drawn scene standing in for the tending record, until a photograph is chosen." }}
-      >
+      <Plate variant="hero" scene="tending" image={{ alt: SCENE_DESCRIPTION.tending }}>
         <Label>The record</Label>
         <Display id="tended-page-heading">While you were away</Display>
         <Body>

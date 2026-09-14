@@ -65,6 +65,48 @@
   --radius-plate: 22px;
   --radius-card: 16px;
   --shadow-plate: 0 18px 40px -20px rgba(30, 20, 8, 0.45);
+
+  /* A print — the whiter paper a photograph is printed on, lifted off the page. */
+  --color-print: #fffaf2;
+  --shadow-print: 0 1px 0 rgba(120, 84, 40, 0.12), 0 16px 32px -20px rgba(70, 42, 16, 0.5);
+
+  /* Scene palette — the drawn scenes (components/scenes/) read only these.
+     Light is a sunlit afternoon: plaster walls, pale sky, soft lamp glow. */
+  --scene-wall-top: #f0dab6;
+  --scene-wall-low: #e2c093;
+  --scene-floor: #b98256;
+  --scene-wood: #a8704a;
+  --scene-wood-dark: #6e4630;
+  --scene-cork: #c99a6a;
+  --scene-leaf: #6f9562;
+  --scene-leaf-deep: #4b7048;
+  --scene-far: #b3c6a6;
+  --scene-near: #8aa77c;
+  --scene-sage: #93ab86;
+  --scene-sage-deep: #6b8a63;
+  --scene-terracotta: #cf7b50;
+  --scene-terracotta-deep: #b0603c;
+  --scene-rose: #dca59c;
+  --scene-plum: #7d4660;
+  --scene-plum-deep: #5e3348;
+  --scene-paper: #fbf2e2;
+  --scene-paper-shade: #e6d3b5;
+  --scene-brass: #dcae55;
+  --scene-brass-deep: #b98a36;
+  --scene-sun: #fbe3a0;
+  --scene-shade: #f4d49a;
+  --scene-cup: #fbf2e2;
+  --scene-tea: #9a6a44;
+  --scene-path: #ecd4a2;
+  --scene-water: #9fbcb8;
+  --scene-ink: #3b2a1d;
+  --scene-sky-top: #a8cbc6;
+  --scene-sky-low: #f5dcae;
+  --scene-glow: #fff0c8;
+  --scene-glow-strength: 0.55;
+  --scene-beam-strength: 0.2;
+  --scene-star-strength: 0;
+  --scene-steam-strength: 0.8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,5 +135,46 @@
     --color-script-text: #e3a47c; /* on --color-bg, 4.5:1+ */
 
     --shadow-plate: 0 18px 44px -18px rgba(0, 0, 0, 0.65);
+
+    --color-print: #2c241d;
+    --shadow-print: 0 1px 0 rgba(255, 220, 160, 0.06), 0 18px 36px -18px rgba(0, 0, 0, 0.75);
+
+    /* The same scenes as a lamplit evening: a night sky with a moon and
+       stars through the window, deeper walls, and the lamp doing the work. */
+    --scene-wall-top: #3d2c23;
+    --scene-wall-low: #2a1f19;
+    --scene-floor: #3d281d;
+    --scene-wood: #6b4630;
+    --scene-wood-dark: #3e281b;
+    --scene-cork: #7a5a3c;
+    --scene-leaf: #56784c;
+    --scene-leaf-deep: #37533a;
+    --scene-far: #2e3b48;
+    --scene-near: #33463d;
+    --scene-sage: #607a5c;
+    --scene-sage-deep: #465d44;
+    --scene-terracotta: #b9663f;
+    --scene-terracotta-deep: #8f4a2d;
+    --scene-rose: #a2706a;
+    --scene-plum: #5a2f45;
+    --scene-plum-deep: #3f2030;
+    --scene-paper: #eedcbe;
+    --scene-paper-shade: #bfa78a;
+    --scene-brass: #e2b25a;
+    --scene-brass-deep: #a57c34;
+    --scene-sun: #f3e6c2;
+    --scene-shade: #ffcf7a;
+    --scene-cup: #e5d2b2;
+    --scene-tea: #6d4a30;
+    --scene-path: #8c7050;
+    --scene-water: #283b4a;
+    --scene-ink: #1a120c;
+    --scene-sky-top: #121c2e;
+    --scene-sky-low: #36415f;
+    --scene-glow: #ffc36e;
+    --scene-glow-strength: 0.8;
+    --scene-beam-strength: 0.08;
+    --scene-star-strength: 0.9;
+    --scene-steam-strength: 0.45;
   }
 }

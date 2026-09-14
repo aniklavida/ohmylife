@@ -2,6 +2,7 @@ import type { OpenItem } from "../../lib/summary/whats-open";
 import { Plate } from "../primitives/plate";
 import { Script } from "../primitives/script";
 import { Body, Display, Label } from "../primitives/prose";
+import { SCENE_DESCRIPTION } from "../scenes/scenes";
 import { toComparableDate } from "../../lib/summary/whats-open";
 
 const AREA_LABEL: Record<string, string> = {
@@ -31,14 +32,7 @@ function humanizeDue(item: OpenItem): string {
 export function OpenToday({ items }: { items: OpenItem[] }) {
   return (
     <section className="open-today" aria-labelledby="open-today-heading">
-      <Plate
-        variant="hero"
-        image={{
-          alt:
-            "A drawn scene of a quiet room at dusk: warm lamplight glowing " +
-            "beside a tall window, with two leafy plants in silhouette.",
-        }}
-      >
+      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }}>
         <Label>Today</Label>
         <Display id="open-today-heading">A few things are waiting for you.</Display>
         <Body>Nothing urgent — just what is genuinely due, whenever you get to it.</Body>

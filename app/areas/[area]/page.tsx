@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Plate } from "../../../components/primitives/plate";
 import { Body, Display, Heading, Label } from "../../../components/primitives/prose";
+import { SCENE_DESCRIPTION, sceneForArea } from "../../../components/scenes/scenes";
 import { AREAS, type Area } from "../../../lib/entry/schema";
 import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../../../lib/index/runtime";
 import { listIndexedEntries } from "../../../lib/index/query";
@@ -31,6 +32,7 @@ export default async function AreaPage({ params }: { params: Promise<{ area: str
   if (!AREAS.includes(area as Area)) notFound();
   const typedArea = area as Area;
   const label = AREA_LABEL[typedArea] ?? typedArea;
+  const scene = sceneForArea(typedArea);
 
   const lifeRoot = resolveLifeRoot();
   const dbPath = ensureFreshIndex(lifeRoot, resolveDbPath());
@@ -41,12 +43,7 @@ export default async function AreaPage({ params }: { params: Promise<{ area: str
 
   return (
     <section className="area-page" aria-labelledby="area-page-heading">
-      <Plate
-        variant="hero"
-        image={{
-          alt: `A drawn scene standing in for ${label.toLowerCase()}, until a photograph is chosen.`,
-        }}
-      >
+      <Plate variant="hero" scene={scene} image={{ alt: SCENE_DESCRIPTION[scene] }}>
         <Label>Area</Label>
         <Display id="area-page-heading">{label}</Display>
         <Body>{sentence}</Body>

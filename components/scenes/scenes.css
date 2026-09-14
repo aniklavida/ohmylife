@@ -1,0 +1,77 @@
+/*
+ * Drawn scenes. Every fill here reads a scene token from tokens.css, so a
+ * theme recolours the drawings without touching their shapes — and the dark
+ * theme turns an afternoon into an evening rather than inverting it.
+ */
+
+.sc-stop-wall-top { stop-color: var(--scene-wall-top); }
+.sc-stop-wall-low { stop-color: var(--scene-wall-low); }
+.sc-stop-sky-top { stop-color: var(--scene-sky-top); }
+.sc-stop-sky-low { stop-color: var(--scene-sky-low); }
+.sc-stop-glow { stop-color: var(--scene-glow); stop-opacity: var(--scene-glow-strength); }
+.sc-stop-glow-fade { stop-color: var(--scene-glow); stop-opacity: 0; }
+
+.sc-wall-low { fill: var(--scene-wall-low); }
+.sc-floor { fill: var(--scene-floor); }
+.sc-rug { fill: var(--scene-terracotta); opacity: 0.35; }
+.sc-wood { fill: var(--scene-wood); }
+.sc-wood-dark { fill: var(--scene-wood-dark); }
+.sc-cork { fill: var(--scene-cork); }
+.sc-leaf { fill: var(--scene-leaf); }
+.sc-leaf-deep { fill: var(--scene-leaf-deep); }
+.sc-far { fill: var(--scene-far); }
+.sc-near { fill: var(--scene-near); }
+.sc-sage { fill: var(--scene-sage); }
+.sc-sage-deep { fill: var(--scene-sage-deep); }
+.sc-terracotta { fill: var(--scene-terracotta); }
+.sc-terracotta-deep { fill: var(--scene-terracotta-deep); }
+.sc-rose { fill: var(--scene-rose); }
+.sc-sheer { opacity: 0.55; }
+.sc-plum { fill: var(--scene-plum); }
+.sc-plum-deep { fill: var(--scene-plum-deep); }
+.sc-paper { fill: var(--scene-paper); }
+.sc-paper-shade { fill: var(--scene-paper-shade); }
+.sc-brass { fill: var(--scene-brass); }
+.sc-brass-deep { fill: var(--scene-brass-deep); }
+.sc-sun { fill: var(--scene-sun); }
+.sc-shade { fill: var(--scene-shade); }
+.sc-cup { fill: var(--scene-cup); }
+.sc-tea { fill: var(--scene-tea); }
+.sc-path { fill: var(--scene-path); }
+.sc-water { fill: var(--scene-water); }
+.sc-beam { fill: var(--scene-glow); opacity: var(--scene-beam-strength); }
+.sc-glass { fill: var(--scene-paper); opacity: 0.22; }
+.sc-glass-edge { fill: none; stroke: var(--scene-paper); stroke-opacity: 0.7; stroke-width: 6; }
+.sc-shine { fill: none; stroke: var(--scene-paper); stroke-opacity: 0.6; stroke-width: 8; stroke-linecap: round; }
+/* Stars only come out when the theme draws a night sky. */
+.sc-stars { opacity: var(--scene-star-strength); }
+.sc-star { fill: var(--scene-sun); }
+
+.sc-steam,
+.sc-shimmer {
+  fill: none;
+  stroke: var(--scene-paper);
+  stroke-linecap: round;
+}
+
+.sc-steam { stroke-width: 7; stroke-opacity: var(--scene-steam-strength); }
+.sc-shimmer { stroke-width: 5; stroke-opacity: 0.45; }
+
+.sc-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sc-line--cup { stroke: var(--scene-cup); stroke-width: 12; }
+.sc-line--brass { stroke: var(--scene-brass); stroke-width: 10; }
+.sc-line--key { stroke: var(--scene-brass); stroke-width: 10; }
+.sc-line--string { stroke: var(--scene-wood-dark); stroke-width: 4; }
+.sc-line--spine { stroke: var(--scene-paper-shade); stroke-width: 6; }
+.sc-line--pot { stroke: var(--scene-terracotta); stroke-width: 22; }
+.sc-line--pattern { stroke: var(--scene-paper); stroke-width: 6; stroke-opacity: 0.6; }
+.sc-line--ink { stroke: var(--scene-ink); stroke-width: 6; stroke-opacity: 0.55; }
+.sc-line--arm { stroke: var(--scene-brass-deep); stroke-width: 14; }
+.sc-line--handle { stroke: var(--scene-sage-deep); stroke-width: 20; }
+.sc-line--envelope { stroke: var(--scene-paper-shade); stroke-width: 6; }
+.sc-line--bird { stroke: var(--scene-ink); stroke-width: 5; stroke-opacity: 0.6; }

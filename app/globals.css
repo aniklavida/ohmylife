@@ -1,5 +1,6 @@
 @import "../components/primitives/tokens.css";
 @import "../components/primitives/primitives.css";
+@import "../components/scenes/scenes.css";
 @import "../components/nav/nav.css";
 @import "../components/quiet/quiet.css";
 @import "../components/today/today.css";
@@ -37,8 +38,8 @@ a {
   color: inherit;
 }
 
-/* Visually hidden, still announced — used to carry a placeholder image's
- * alt text since the placeholder graphic itself is `aria-hidden`. */
+/* Visually hidden, still announced — used to carry a drawn scene's
+ * description, since the drawing itself is `aria-hidden`. */
 .sr-only {
   position: absolute;
   width: 1px;

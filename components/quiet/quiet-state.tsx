@@ -1,6 +1,7 @@
 import { Plate } from "../primitives/plate";
 import { Script } from "../primitives/script";
 import { Body, Display, Label } from "../primitives/prose";
+import { SCENE_DESCRIPTION } from "../scenes/scenes";
 
 /**
  * "Nothing needs you today" — the most-seen screen in the product
@@ -17,14 +18,7 @@ import { Body, Display, Label } from "../primitives/prose";
 export function QuietState() {
   return (
     <section className="quiet-state" aria-labelledby="quiet-state-heading">
-      <Plate
-        variant="hero"
-        image={{
-          alt:
-            "A drawn scene of a quiet room at dusk: warm lamplight glowing " +
-            "beside a tall window, with two leafy plants in silhouette.",
-        }}
-      >
+      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }}>
         <Label>Today</Label>
         <Display id="quiet-state-heading">Nothing needs you today.</Display>
         <Body>

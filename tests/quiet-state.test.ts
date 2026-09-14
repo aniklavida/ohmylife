@@ -43,7 +43,7 @@ describe("the quiet state", () => {
   });
 
   it('never mentions a count of items — quiet is not "0 things"', () => {
-    // Strip the placeholder scene's own SVG first: its coordinates and
+    // Strip the drawn scene's own SVG first: its coordinates and
     // gradient offsets are decorative markup, not the guilt-mechanic count
     // this test actually guards against.
     const withoutArt = html.replace(/<svg[\s\S]*?<\/svg>/, "");
