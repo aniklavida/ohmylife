@@ -30,6 +30,7 @@ test-results/
 # A life — never committed to this repository
 life/
 .ohmylife/
+.weallhatelife/
 *.db
 *.db-shm
 *.db-wal

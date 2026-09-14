@@ -72,7 +72,7 @@ const REPO_ROOT = path.resolve(__dirname, "..");
  * never to route anywhere, so the deliberate dials below cannot reach a real
  * host even if a patch were missing. */
 const UNROUTABLE_IP = "192.0.2.1";
-const UNROUTABLE_HOST = "ohmylife.invalid";
+const UNROUTABLE_HOST = "weallhatelife.invalid";
 
 interface Attempt {
   api: string;
@@ -186,7 +186,7 @@ describe("nothing the product runs opens a connection", () => {
   let quietLife: string;
   let quietDb: string;
   let client: Client;
-  const previousEnv = { life: process.env.OHMYLIFE_LIFE, db: process.env.OHMYLIFE_DB };
+  const previousEnv = { life: process.env.WEALLHATELIFE_LIFE, db: process.env.WEALLHATELIFE_DB };
 
   beforeAll(async () => {
     const root = makeTempDir("no-egress");
@@ -208,7 +208,7 @@ describe("nothing the product runs opens a connection", () => {
     // `mcp/server.ts` read, so the surface under test cannot drift into a
     // subset of the real one — and the first assertion below checks it has
     // not.
-    const server = new McpServer({ name: "ohmylife", version: "0.0.0" });
+    const server = new McpServer({ name: "weallhatelife", version: "0.0.0" });
     registerTools(server);
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);
@@ -221,8 +221,8 @@ describe("nothing the product runs opens a connection", () => {
   afterAll(async () => {
     while (restore.length > 0) (restore.pop() as () => void)();
     await client?.close();
-    process.env.OHMYLIFE_LIFE = previousEnv.life;
-    process.env.OHMYLIFE_DB = previousEnv.db;
+    process.env.WEALLHATELIFE_LIFE = previousEnv.life;
+    process.env.WEALLHATELIFE_DB = previousEnv.db;
     while (cleanupDirs.length > 0) cleanupDir(cleanupDirs.pop() as string);
   });
 
@@ -359,8 +359,8 @@ describe("nothing the product runs opens a connection", () => {
   }, 30_000);
 
   it("rendering the home page on a day with something open opens no connection", async () => {
-    process.env.OHMYLIFE_LIFE = busyLife;
-    process.env.OHMYLIFE_DB = busyDb;
+    process.env.WEALLHATELIFE_LIFE = busyLife;
+    process.env.WEALLHATELIFE_DB = busyDb;
 
     let markup = "";
     const seen = await watch(async () => {
@@ -374,8 +374,8 @@ describe("nothing the product runs opens a connection", () => {
   }, 20_000);
 
   it("rendering the home page on a quiet day opens no connection", async () => {
-    process.env.OHMYLIFE_LIFE = quietLife;
-    process.env.OHMYLIFE_DB = quietDb;
+    process.env.WEALLHATELIFE_LIFE = quietLife;
+    process.env.WEALLHATELIFE_DB = quietDb;
 
     let markup = "";
     const seen = await watch(async () => {
@@ -402,8 +402,8 @@ describe("nothing the product runs opens a connection", () => {
       [busyLife, busyDb, "a day with something open"],
       [quietLife, quietDb, "a quiet day"],
     ] as const) {
-      process.env.OHMYLIFE_LIFE = life;
-      process.env.OHMYLIFE_DB = db;
+      process.env.WEALLHATELIFE_LIFE = life;
+      process.env.WEALLHATELIFE_DB = db;
       const markup = renderToStaticMarkup(await HomePage());
       // `xmlns="http://www.w3.org/2000/svg"` is an XML namespace name, not
       // an address: it identifies the SVG vocabulary and is never

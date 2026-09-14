@@ -55,7 +55,7 @@ describe("the MCP server, over a real client", () => {
       command: "npx",
       args: ["tsx", path.join(REPO_ROOT, "mcp/server.ts")],
       cwd: REPO_ROOT,
-      env: { ...(process.env as Record<string, string>), OHMYLIFE_LIFE: lifeRoot, OHMYLIFE_DB: dbPath },
+      env: { ...(process.env as Record<string, string>), WEALLHATELIFE_LIFE: lifeRoot, WEALLHATELIFE_DB: dbPath },
     });
     client = new Client({ name: "test-client", version: "0.0.0" });
     await client.connect(transport);
@@ -219,7 +219,7 @@ describe("the MCP server, over a real client", () => {
       command: "npx",
       args: ["tsx", path.join(REPO_ROOT, "mcp/server.ts")],
       cwd: REPO_ROOT,
-      env: { ...(process.env as Record<string, string>), OHMYLIFE_LIFE: soloLife, OHMYLIFE_DB: soloDb },
+      env: { ...(process.env as Record<string, string>), WEALLHATELIFE_LIFE: soloLife, WEALLHATELIFE_DB: soloDb },
     });
     const solo = new Client({ name: "test-client-solo", version: "0.0.0" });
     await solo.connect(transport);

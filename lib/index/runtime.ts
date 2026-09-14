@@ -5,8 +5,46 @@
 // read real data through lib/ — the only code allowed to touch disk
 // (docs/STRUCTURE.md) — rather than depending on the MCP layer, which
 // docs/ARCHITECTURE.md draws as a separate front door onto the same core.
+import fs from "node:fs";
 import path from "node:path";
 import { rebuildIndex } from "./build";
+
+// Renamed from OhMyLife to WeAllHateLife on 15 Sep 2026 (CHANGELOG.md). Nobody
+// had released data under the old names yet, but the fallback below exists so
+// that anyone who already ran `dev:sample` or set an env var before the
+// rename lands on their own machine keeps working, with a one-time notice
+// telling them to move on.
+const warnedLegacyEnv = new Set<string>();
+
+function warnLegacyEnv(oldName: string, newName: string): void {
+  if (warnedLegacyEnv.has(oldName)) return;
+  warnedLegacyEnv.add(oldName);
+  console.warn(
+    `[weallhatelife] ${oldName} is deprecated and will stop being read in a future release. Use ${newName} instead.`,
+  );
+}
+
+/** Reads `currentName`, falling back to `legacyName` with a one-time deprecation notice. */
+function readEnvWithLegacyFallback(currentName: string, legacyName: string): string | undefined {
+  const current = process.env[currentName];
+  if (current !== undefined) return current;
+  const legacy = process.env[legacyName];
+  if (legacy !== undefined) {
+    warnLegacyEnv(legacyName, currentName);
+    return legacy;
+  }
+  return undefined;
+}
+
+let warnedLegacyStateFolder = false;
+
+function warnLegacyStateFolder(oldPath: string, newPath: string): void {
+  if (warnedLegacyStateFolder) return;
+  warnedLegacyStateFolder = true;
+  console.warn(
+    `[weallhatelife] Found ${oldPath} from before the WeAllHateLife rename. Reading it for now, but it will stop being read in a future release — remove it, or set WEALLHATELIFE_DB, to move to ${newPath}.`,
+  );
+}
 
 // The `turbopackIgnore` comments tell Turbopack this is a genuinely dynamic,
 // user-configured path (an env var, defaulting to a path outside the
@@ -16,11 +54,28 @@ import { rebuildIndex } from "./build";
 // warning this otherwise produces now that a server component
 // (app/page.tsx) calls it, not only the MCP server.
 export function resolveLifeRoot(): string {
-  return path.resolve(/* turbopackIgnore: true */ process.env.OHMYLIFE_LIFE ?? "./life");
+  const value = readEnvWithLegacyFallback("WEALLHATELIFE_LIFE", "OHMYLIFE_LIFE") ?? "./life";
+  return path.resolve(/* turbopackIgnore: true */ value);
 }
 
 export function resolveDbPath(): string {
-  return path.resolve(/* turbopackIgnore: true */ process.env.OHMYLIFE_DB ?? "./.ohmylife/index.db");
+  const fromEnv = readEnvWithLegacyFallback("WEALLHATELIFE_DB", "OHMYLIFE_DB");
+  if (fromEnv !== undefined) {
+    return path.resolve(/* turbopackIgnore: true */ fromEnv);
+  }
+
+  const defaultPath = "./.weallhatelife/index.db";
+  const legacyDefaultDir = "./.ohmylife";
+  // No env var either way — if a pre-rename state folder exists on disk and
+  // the new one does not, keep reading the old one rather than silently
+  // starting a second, empty index next to it.
+  if (!fs.existsSync("./.weallhatelife") && fs.existsSync(legacyDefaultDir)) {
+    const legacyDefaultPath = "./.ohmylife/index.db";
+    warnLegacyStateFolder(legacyDefaultDir, "./.weallhatelife");
+    return path.resolve(/* turbopackIgnore: true */ legacyDefaultPath);
+  }
+
+  return path.resolve(/* turbopackIgnore: true */ defaultPath);
 }
 
 /**

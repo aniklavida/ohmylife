@@ -13,7 +13,7 @@ const config = [
     // Build output, dependencies, and the checked-in example life — the last
     // is sample *data* (Markdown and its front matter), not source, and has
     // no lint rules that meaningfully apply to it.
-    ignores: [".next/**", "node_modules/**", ".ohmylife/**", "examples/**"],
+    ignores: [".next/**", "node_modules/**", ".ohmylife/**", ".weallhatelife/**", "examples/**"],
   },
   ...coreWebVitals,
   ...typescript,

@@ -8,15 +8,15 @@ import TendedPage from "../app/tended/page";
 import { EXAMPLE_LIFE_ROOT } from "./helpers";
 
 describe("the full tending record page", () => {
-  const originalLifeRoot = process.env.OHMYLIFE_LIFE;
+  const originalLifeRoot = process.env.WEALLHATELIFE_LIFE;
 
   afterEach(() => {
-    if (originalLifeRoot === undefined) delete process.env.OHMYLIFE_LIFE;
-    else process.env.OHMYLIFE_LIFE = originalLifeRoot;
+    if (originalLifeRoot === undefined) delete process.env.WEALLHATELIFE_LIFE;
+    else process.env.WEALLHATELIFE_LIFE = originalLifeRoot;
   });
 
   it("reads as a day by default, grouping the worked example's tending history under its own dates", async () => {
-    process.env.OHMYLIFE_LIFE = EXAMPLE_LIFE_ROOT;
+    process.env.WEALLHATELIFE_LIFE = EXAMPLE_LIFE_ROOT;
     const element = await TendedPage({ searchParams: Promise.resolve({}) });
     const html = renderToStaticMarkup(element);
 
@@ -27,7 +27,7 @@ describe("the full tending record page", () => {
   });
 
   it("reads as a week when asked, grouping every day in that week under one heading", async () => {
-    process.env.OHMYLIFE_LIFE = EXAMPLE_LIFE_ROOT;
+    process.env.WEALLHATELIFE_LIFE = EXAMPLE_LIFE_ROOT;
     const dayView = renderToStaticMarkup(
       await TendedPage({ searchParams: Promise.resolve({}) }),
     );
@@ -44,7 +44,7 @@ describe("the full tending record page", () => {
   });
 
   it("reads as the history of one entry when filtered, and nothing about any other entry", async () => {
-    process.env.OHMYLIFE_LIFE = EXAMPLE_LIFE_ROOT;
+    process.env.WEALLHATELIFE_LIFE = EXAMPLE_LIFE_ROOT;
     const element = await TendedPage({ searchParams: Promise.resolve({ entry: "dentist-checkup" }) });
     const html = renderToStaticMarkup(element);
 

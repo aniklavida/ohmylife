@@ -16,7 +16,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { registerTools } from "./tools/index";
 
 const server = new McpServer({
-  name: "ohmylife",
+  name: "weallhatelife",
   version: "0.0.0",
 });
 
@@ -28,6 +28,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("ohmylife MCP server failed to start:", error);
+  console.error("weallhatelife MCP server failed to start:", error);
   process.exitCode = 1;
 });

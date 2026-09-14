@@ -9,7 +9,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 
 /** A fresh temp directory, removed automatically by the caller's `onCleanup`. */
 export function makeTempDir(prefix: string): string {
-  return fs.mkdtempSync(path.join(os.tmpdir(), `ohmylife-${prefix}-`));
+  return fs.mkdtempSync(path.join(os.tmpdir(), `weallhatelife-${prefix}-`));
 }
 
 export function cleanupDir(dir: string): void {

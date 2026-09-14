@@ -5,7 +5,7 @@ import { caveat, fraunces, inter } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OhMyLife",
+  title: "WeAllHateLife!",
   description: "A self-hosted life, kept by whichever AI you already run.",
 };
 

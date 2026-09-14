@@ -133,7 +133,7 @@ const titleSchema = z
  * there are "no `open` / `private` / `sealed` per-entry visibility tiers",
  * because neither a tier nor encryption stops a hosted model retaining what
  * it was already shown. Anyone who wants nothing to leave their machine
- * points OhMyLife at a local model instead.
+ * points WeAllHateLife at a local model instead.
  */
 const envelopeShape = {
   id: idSchema,

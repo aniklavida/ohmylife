@@ -56,7 +56,7 @@ export function Sidebar() {
       <div className="sidebar__brand">
         <SunriseMarkIcon className="sidebar__mark" width={26} height={26} />
         <div>
-          <p className="sidebar__wordmark">OhMyLife</p>
+          <p className="sidebar__wordmark">WeAllHateLife!</p>
           <p className="sidebar__tagline">a life, kept while you&apos;re away</p>
         </div>
       </div>

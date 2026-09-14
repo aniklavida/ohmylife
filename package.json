@@ -1,5 +1,5 @@
 {
-  "name": "ohmylife",
+  "name": "weallhatelife",
   "version": "0.0.0",
   "private": true,
   "description": "A self-hosted life, kept by whichever AI you already run.",
@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "dev:sample": "OHMYLIFE_LIFE=examples/sample-life OHMYLIFE_DB=.ohmylife/dev-index.db next dev",
+    "dev:sample": "WEALLHATELIFE_LIFE=examples/sample-life WEALLHATELIFE_DB=.weallhatelife/dev-index.db next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
