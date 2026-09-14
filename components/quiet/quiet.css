@@ -1,20 +1,21 @@
 /* The quiet state — "Nothing needs you today." Warm and full, never
- * austere: a photographic hero, a handwritten margin note, and a closing
- * sentence in ordinary prose. See quiet-state.tsx for why austerity is
- * exactly what this screen must not be: docs/SPEC.md §4 requires that a
- * quiet day never look like a page that failed to load. */
+ * austere: the same lamplit room, the same note pinned to its wall, and on
+ * it, set large, that nothing is on the table. The shared layout lives in
+ * today.css; see quiet-state.tsx for why austerity is exactly what this
+ * screen must not be (docs/SPEC.md §4). */
 
-.quiet-state {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(20px, 3vw, 32px);
-}
-
-.quiet-state__margin-note {
-  align-self: flex-start;
-  margin-left: clamp(4px, 3vw, 40px);
+.today__nothing {
+  margin: 2px 0 2px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 460;
+  font-size: clamp(1.7rem, 1.35rem + 1vw, 2.2rem);
+  line-height: 1.08;
+  color: var(--color-ink);
 }
 
 .quiet-state__closing {
-  max-width: 46ch;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.5;
 }

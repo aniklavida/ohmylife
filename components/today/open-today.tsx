@@ -19,40 +19,42 @@ function humanizeDue(item: OpenItem): string {
 }
 
 /**
- * A day when something is genuinely open. Deliberately minimal: the full
- * design for a normal day — the life summary, the area cards, the tending
- * panel — is docs/ROADMAP.md step 5, "The place." Step 4 designed the quiet
- * state (components/quiet/quiet-state.tsx); this branch exists only so the
- * home route has something truthful to render meanwhile, and it still holds
- * every guilt constraint docs/SPEC.md §13 states: no count of
- * items appears anywhere, and an overdue item is never styled differently
- * from an upcoming one — only the date itself, read plainly, tells them
- * apart.
+ * A day when something is genuinely open — the glance. The room is the
+ * hero, and what needs you is a note pinned to its wall, beside the
+ * headline, so it is found at once without the page turning into a list.
+ *
+ * It holds every guilt constraint docs/SPEC.md §13 states: no count of
+ * items appears anywhere, and every item is written the same way whatever
+ * its date — only the date itself, read plainly, tells them apart.
  */
 export function OpenToday({ items }: { items: OpenItem[] }) {
   return (
-    <section className="open-today" aria-labelledby="open-today-heading">
-      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }}>
+    <section className="today open-today" aria-labelledby="open-today-heading">
+      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }} className="today__plate">
         <Label>Today</Label>
         <Display id="open-today-heading">A few things are waiting for you.</Display>
         <Body>Nothing urgent — just what is genuinely due, whenever you get to it.</Body>
       </Plate>
 
-      <Script rotate={2} className="open-today__margin-note">
-        Same life. Brighter days.
-      </Script>
-
-      <ul className="open-today__list">
-        {items.map((item) => (
-          <li key={item.id} className="open-today__item">
-            <Label className="open-today__area">{AREA_LABEL[item.area] ?? item.area}</Label>
-            <Body as="span" className="open-today__title">
-              {item.title}
-            </Body>
-            <Label className="open-today__due">{humanizeDue(item)}</Label>
-          </li>
-        ))}
-      </ul>
+      <aside className="today__note" aria-label="On the table today">
+        <Label as="p" className="today__note-label">
+          On the table
+        </Label>
+        <ul className="open-today__list">
+          {items.map((item) => (
+            <li key={item.id} className="open-today__item">
+              <Body as="span" className="open-today__title">
+                {item.title}
+              </Body>
+              <Label className="open-today__area">{AREA_LABEL[item.area] ?? item.area}</Label>
+              <Label className="open-today__due">{humanizeDue(item)}</Label>
+            </li>
+          ))}
+        </ul>
+        <Script rotate={-2} className="open-today__margin-note">
+          Same life. Brighter days.
+        </Script>
+      </aside>
     </section>
   );
 }

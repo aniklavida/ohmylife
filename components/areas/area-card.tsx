@@ -58,7 +58,7 @@ export function AreaCardGrid({ cards }: { cards: AreaSummary[] }) {
   return (
     <div className="area-card-grid" role="list" aria-label="Areas of your life">
       {cards.map((card) => (
-        <div role="listitem" key={card.area} className="area-card-grid__item">
+        <div role="listitem" key={card.area} className={`area-card-grid__item area-card-grid__item--${card.area}`}>
           <AreaCard {...card} />
         </div>
       ))}

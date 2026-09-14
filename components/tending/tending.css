@@ -1,14 +1,58 @@
-/* The tending panel — filed, corrected, left alone. One calm list, no
- * interactive control: this surface shows what happened, and does not yet
- * offer a way to change it (docs/ARCHITECTURE.md §4). */
+/* The tending panel — filed, corrected, left alone. A paper note taped to
+ * the page, with no interactive control of its own: it shows what happened,
+ * and points to the full record for anything more (docs/ARCHITECTURE.md §4). */
 
 .tending-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: clamp(20px, 3vw, 28px);
-  background: var(--color-surface);
-  border-radius: var(--radius-card);
+  gap: 12px;
+  padding: clamp(26px, 3vw, 36px) clamp(20px, 3vw, 34px) clamp(20px, 2.6vw, 28px);
+  background: var(--color-print);
+  border-radius: 4px;
+  box-shadow: var(--shadow-print);
+  rotate: -0.4deg;
+}
+
+.tending-panel::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 40px;
+  width: 92px;
+  height: 22px;
+  background: var(--color-tape);
+  rotate: -4deg;
+}
+
+.tending-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tending-panel__leaf {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  color: var(--color-sage);
+}
+
+.tending-panel__stem {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.tending-panel__blade {
+  fill: currentColor;
+}
+
+.tending-panel__voice {
+  align-self: flex-start;
+  margin: -8px 0 4px 40px;
+  font-size: 1.3rem;
 }
 
 .tending-panel__list {
@@ -17,14 +61,15 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .tending-panel__item {
   display: grid;
-  grid-template-columns: 96px 1fr;
+  grid-template-columns: 104px 1fr;
   gap: 16px;
   align-items: baseline;
+  padding: 11px 0;
+  border-top: 1px dashed var(--color-rule-soft);
 }
 
 .tending-panel__bucket {
@@ -35,8 +80,29 @@
   color: var(--color-ink);
 }
 
+.tending-panel__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-rule-soft);
+}
+
 .tending-panel__closing {
+  margin: 0;
+  font-style: italic;
   color: var(--color-ink-muted);
+}
+
+.tending-panel__more {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-text);
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 560px) {

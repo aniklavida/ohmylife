@@ -71,6 +71,13 @@
   /* Printed rules on that paper — the almanac's double rule and its column lines. */
   --color-rule: #bfa27a;
   --color-rule-soft: #e3d2b6;
+  /* Paper tape holding a print or a note to the page. */
+  --color-tape: rgba(214, 188, 142, 0.72);
+
+  /* The plum banner's own inks, each measured against --color-plum. */
+  --color-plum-ink-muted: #e8d2db;
+  --color-plum-accent: #f4bc98;
+  --color-plum-glow: rgba(217, 131, 86, 0.38);
   --shadow-print: 0 1px 0 rgba(120, 84, 40, 0.12), 0 16px 32px -20px rgba(70, 42, 16, 0.5);
 
   /* Scene palette — the drawn scenes (components/scenes/) read only these.
@@ -142,6 +149,11 @@
     --color-print: #2c241d;
     --color-rule: #6f5a44;
     --color-rule-soft: #45382c;
+    --color-tape: rgba(150, 122, 86, 0.5);
+
+    --color-plum-ink-muted: #dcc2cd;
+    --color-plum-accent: #f0ad84;
+    --color-plum-glow: rgba(224, 138, 91, 0.24);
     --shadow-print: 0 1px 0 rgba(255, 220, 160, 0.06), 0 18px 36px -18px rgba(0, 0, 0, 0.75);
 
     /* The same scenes as a lamplit evening: a night sky with a moon and

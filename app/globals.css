@@ -8,6 +8,7 @@
 @import "../components/areas/areas.css";
 @import "../components/tending/tending.css";
 @import "../components/tending/tending-record.css";
+@import "../components/home/home.css";
 
 *,
 *::before,
@@ -53,9 +54,11 @@ a {
 }
 
 .app-main {
-  padding: clamp(20px, 4vw, 56px);
-  max-width: 1040px;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 56px) clamp(16px, 4vw, 56px) clamp(32px, 5vw, 72px);
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 3vw, 32px);
+  gap: clamp(24px, 3.4vw, 40px);
 }
