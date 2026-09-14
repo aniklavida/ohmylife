@@ -33,11 +33,25 @@ export interface TendingRecord {
   summary: string;
   /** The reason argument the caller supplied, verbatim. */
   reason: string;
+  /**
+   * Only ever set on a "corrected" line — the exact previous value of each
+   * field `update_entry` is about to overwrite, captured before the write
+   * happens. This is what lets an undo restore the previous state exactly
+   * (docs/SPEC.md §11) rather than merely guessing at one. A "filed" line
+   * needs no equivalent: undoing a creation is `archive_entry`, and a
+   * "left_alone" line changed nothing, so there is nothing to record here.
+   */
+  revert?: Record<string, unknown>;
 }
 
 export interface WrittenTendingRecord extends Required<Pick<TendingRecord, "at" | "tool" | "bucket" | "summary" | "reason">> {
   entryId?: string;
+  revert?: Record<string, unknown>;
   relativePath: string;
+  /** Set once `undoTendingRecord` (lib/tending/undo.ts) has reversed this
+   * line. Read from a separate side-file, never from this line itself —
+   * see that module's own comment for why the log stays append-only. */
+  undoneAt?: string;
 }
 
 function dateFragment(iso: string): string {
@@ -74,6 +88,7 @@ export function recordTending(lifeRoot: string, record: TendingRecord): WrittenT
     entryId: record.entryId,
     summary,
     reason,
+    revert: record.revert,
     relativePath: `tended/${dateFragment(at)}.md`,
   };
 
@@ -91,11 +106,62 @@ export function recordTending(lifeRoot: string, record: TendingRecord): WrittenT
     entryId: record.entryId,
     summary,
     reason,
+    revert: record.revert,
   });
   const line = `- **${timeFragment(at)}** — ${BUCKET_LABEL[record.bucket]}:${entryRef} ${summary} _(via \`${record.tool}\`)_\n  <!-- tending: ${payload} -->\n`;
 
   fs.appendFileSync(filePath, heading + line, "utf8");
   return written;
+}
+
+// Whether a line has been reversed lives in a small side-file, never in the
+// day's own markdown — the log above is append-only by design ("never
+// removes or rewrites a previous line"), and rewriting a line in place the
+// moment it is undone would break that promise the first time anyone
+// actually used the feature. A record is keyed by its file and timestamp,
+// which together are unique because `recordTending` never writes two lines
+// with the same `at`.
+const UNDONE_STORE_RELATIVE = "tended/.undone.json";
+
+interface UndoneEntry {
+  relativePath: string;
+  at: string;
+  undoneAt: string;
+}
+
+function undoneKey(relativePath: string, at: string): string {
+  return `${relativePath}#${at}`;
+}
+
+function readUndoneStore(lifeRoot: string): UndoneEntry[] {
+  const filePath = path.join(lifeRoot, UNDONE_STORE_RELATIVE);
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    return Array.isArray(parsed) ? (parsed as UndoneEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Marks one tending line as undone. Idempotent: undoing twice records once. */
+export function markTendingUndone(lifeRoot: string, relativePath: string, at: string): string {
+  const undoneAt = new Date().toISOString();
+  const store = readUndoneStore(lifeRoot);
+  if (!store.some((entry) => entry.relativePath === relativePath && entry.at === at)) {
+    store.push({ relativePath, at, undoneAt });
+    const filePath = path.join(lifeRoot, UNDONE_STORE_RELATIVE);
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify(store, null, 2) + "\n", "utf8");
+  }
+  return undoneAt;
+}
+
+/** The `undoneAt` timestamp for one line, if it has already been reversed. */
+export function tendingUndoneAt(lifeRoot: string, relativePath: string, at: string): string | undefined {
+  const key = undoneKey(relativePath, at);
+  return readUndoneStore(lifeRoot).find((entry) => undoneKey(entry.relativePath, entry.at) === key)
+    ?.undoneAt;
 }
 
 const TENDING_LINE_PATTERN = /<!-- tending: (.+) -->/g;
@@ -116,10 +182,13 @@ export function readTendingForDate(lifeRoot: string, date: string): WrittenTendi
       entryId?: string;
       summary: string;
       reason: string;
+      revert?: Record<string, unknown>;
     };
+    const relativePath = `tended/${date}.md`;
     records.push({
       ...parsed,
-      relativePath: `tended/${date}.md`,
+      relativePath,
+      undoneAt: tendingUndoneAt(lifeRoot, relativePath, parsed.at),
     });
   }
   return records;
@@ -128,6 +197,29 @@ export function readTendingForDate(lifeRoot: string, date: string): WrittenTendi
 /** Every tending record written on `date` — the same day used to write it. */
 export function tendingFilePathFor(lifeRoot: string, date: string): string {
   return path.join(lifeRoot, "tended", `${date}.md`);
+}
+
+/** Every date (`YYYY-MM-DD`) that has a tending file on disk, oldest first. */
+export function tendingDates(lifeRoot: string): string[] {
+  const tendedDir = path.join(lifeRoot, "tended");
+  if (!fs.existsSync(tendedDir)) return [];
+  return fs
+    .readdirSync(tendedDir)
+    .filter((name) => /^\d{4}-\d{2}-\d{2}\.md$/.test(name))
+    .map((name) => name.slice(0, "2026-09-13".length))
+    .sort();
+}
+
+/**
+ * Every tending record ever written, newest first — what the full record
+ * page (`app/tended/page.tsx`) reads to build its day and week views. Unlike
+ * `readRecentTending` below, nothing is trimmed: the full record is meant to
+ * be read as a history, not a highlight reel.
+ */
+export function readAllTending(lifeRoot: string): WrittenTendingRecord[] {
+  const all = tendingDates(lifeRoot).flatMap((date) => readTendingForDate(lifeRoot, date));
+  all.sort((a, b) => b.at.localeCompare(a.at));
+  return all;
 }
 
 /**
@@ -139,15 +231,5 @@ export function tendingFilePathFor(lifeRoot: string, date: string): string {
  * regardless of how it happens to be spread across files.
  */
 export function readRecentTending(lifeRoot: string, limit = 8): WrittenTendingRecord[] {
-  const tendedDir = path.join(lifeRoot, "tended");
-  if (!fs.existsSync(tendedDir)) return [];
-
-  const dates = fs
-    .readdirSync(tendedDir)
-    .filter((name) => /^\d{4}-\d{2}-\d{2}\.md$/.test(name))
-    .map((name) => name.slice(0, "2026-09-13".length));
-
-  const all = dates.flatMap((date) => readTendingForDate(lifeRoot, date));
-  all.sort((a, b) => b.at.localeCompare(a.at));
-  return all.slice(0, limit);
+  return readAllTending(lifeRoot).slice(0, limit);
 }

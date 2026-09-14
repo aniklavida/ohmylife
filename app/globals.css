@@ -6,6 +6,7 @@
 @import "../components/summary/summary.css";
 @import "../components/areas/areas.css";
 @import "../components/tending/tending.css";
+@import "../components/tending/tending-record.css";
 
 *,
 *::before,
