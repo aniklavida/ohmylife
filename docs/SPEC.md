@@ -1,4 +1,4 @@
-# OhMyLife — product specification
+# WeAllHateLife! — product specification
 
 **Status: draft. Nothing in this document is implemented.** Every capability described here is planned.
 
@@ -144,7 +144,7 @@ There are **no `open` / `private` / `sealed` per-entry visibility tiers**, and n
 
 The reasoning matters more than the rule. **Neither a tier nor encryption stops a hosted model retaining what it was already shown.** A tier would therefore sell a safety it cannot deliver, and a false sense of safety is worse than a plainly stated limit.
 
-**The escape hatch is real, and it is the one this specification names:** anyone who wants nothing leaving their machine points OhMyLife at a **local model**, or connects no model at all. That is the only mechanism that actually delivers it.
+**The escape hatch is real, and it is the one this specification names:** anyone who wants nothing leaving their machine points WeAllHateLife at a **local model**, or connects no model at all. That is the only mechanism that actually delivers it.
 
 A three-tier proposal (`open` · `private` · `sealed`, with Body and Money defaulting to `private`) was previously described here. **It is withdrawn**, and nothing is being built against it.
 
@@ -167,8 +167,8 @@ Encrypting a *single* entry — a passport number, a credential — rather than 
 
 Two products were hiding behind one repository. Both ship, and neither is a fallback for the other:
 
-- **In-site BYOK.** The user pastes their own provider key into the OhMyLife website, and the built-in assistant works there. Nobody without an agent is locked out.
-- **An MCP server.** OhMyLife exposes its own MCP server, so any MCP client connects to it directly. Connecting an agent the user already runs costs them nothing extra, and remains the primary path.
+- **In-site BYOK.** The user pastes their own provider key into the WeAllHateLife website, and the built-in assistant works there. Nobody without an agent is locked out.
+- **An MCP server.** WeAllHateLife exposes its own MCP server, so any MCP client connects to it directly. Connecting an agent the user already runs costs them nothing extra, and remains the primary path.
 
 Both are **planned for v1.0**, and neither is released.
 
@@ -231,11 +231,11 @@ Every one of these exists because counts, badges, streaks and red manufacture gu
 
 Photographs are **swappable data**, never hard-coded markup. A theme is a folder with a manifest supplying colour tokens, a type stack, and one image per slot — the hero rotation and one per area card.
 
-**The structure never moves.** You pick a mood; the layout, type scale and spacing stay the product's.
+**The structure never moves.** You pick a mood, or upload your own photo; the layout, type scale and spacing stay the product's.
 
-Themes ship as folders, so you can make one by dropping in your own photographs without touching code. That is the difference between a theme layer and a hard-coded skin.
+**Uploading your own photo is the primary path.** *(Planned.)* Where a slot has no upload yet, the default is a small set of calm, category-wise images generated with an AI image tool — not stock photography, so there is no licence to source or track. Until that generated set ships, drawn placeholder scenes fill the slot instead.
 
-**Every photograph carries its own licence, recorded in the theme manifest.** An image is not covered by this repository's MIT licence. No image ships without its licence line.
+Themes ship as folders, so a default set of images sits under a manifest alongside colour tokens and a type stack — the same slot a user's own upload fills, without touching code.
 
 Light and dark are each designed — a warm, lamplit dark, not a flipped palette.
 
@@ -267,7 +267,7 @@ Next.js, App Router.
 The bar is one command.
 
 ```
-docker run -v ./life:/life -p 3000:3000 ohmylife
+docker run -v ./life:/life -p 3000:3000 weallhatelife
 ```
 
 - **One container, one volume.** SQLite by default, Postgres supported. A second required service would be a second thing to keep running for the rest of your life.

@@ -1,8 +1,8 @@
-# OhMyLife — contributor and agent instructions
+# WeAllHateLife! — contributor and agent instructions
 
 The canonical guide for humans and coding agents working in this repository. Tool-neutral: Claude, Codex, Cursor, Gemini CLI and others read this file.
 
-> This file is about **contributing to OhMyLife**. It is not the instruction set for an AI that *tends someone's life* — that lives in `skill/`, ships with the product, and is written for the end user's agent.
+> This file is about **contributing to WeAllHateLife**. It is not the instruction set for an AI that *tends someone's life* — that lives in `skill/`, ships with the product, and is written for the end user's agent.
 
 ## What this repository is
 
@@ -92,7 +92,7 @@ Never add a field that exists only in the index. If it is part of a life, it bel
 
 A theme is a folder: `theme.json` plus images. **Never hard-code a photograph, a colour or a font stack into a component** — read it from the active theme.
 
-**Every image needs its licence recorded in `theme.json` beside it.** An image is not covered by this repository's MIT licence. A photograph without a licence line does not get merged.
+**Users upload their own photo for a slot; that's the primary path.** *(Planned.)* Where a slot has no upload, the default is a small set of calm, category-wise images generated with an AI image tool — not stock photography, so there's no licence to record. Until that generated set ships, drawn placeholder scenes fill the slot instead.
 
 ## Privacy
 

@@ -14,7 +14,7 @@ The rule that matters: **`entry` always means a markdown file on disk.** Never a
 ## Repository
 
 ```
-ohmylife/
+weallhatelife/
 ├── README.md · LICENSE · CHANGELOG.md
 ├── CONTRIBUTING.md · SECURITY.md · CODE_OF_CONDUCT.md
 ├── AGENTS.md · CLAUDE.md · GEMINI.md

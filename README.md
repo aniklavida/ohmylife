@@ -1,12 +1,10 @@
-# OhMyLife
+# WeAllHateLife!
 
 **A self-hosted home for your whole life. Your AI keeps it current. You just visit.**
 
 Memories, people, money, body, papers, decisions, someday — alongside the ordinary tasks, projects, goals, habits and areas. You host it. You connect whichever AI you already run over [MCP](https://modelcontextprotocol.io) — or paste your own provider key into the site itself. It does the filing.
 
 > **Pre-implementation.** This repository currently contains the product specification, architecture and structure. **There is no working release yet, and nothing described below is implemented.** Every capability is planned.
-
-> **The name is not final.** `OhMyLife` is the working name and has not been trademark-cleared. It may change before v1.0.
 
 ## The one idea
 
@@ -86,12 +84,12 @@ This matters more here than in most software. The product asks you to put your l
 
 Health and money are in scope, so this has to be exact rather than reassuring. There are two boundaries, and only one of them is ours:
 
-- **The OhMyLife server** stores everything on your own machine, sends no telemetry and runs no update check. If you add your own provider key in the site, the server calls that one provider and nothing else. The claim is therefore **"nothing leaves unless you configure a key, and then only to the provider you chose"** — never a blanket promise that nothing leaves at all. *(Planned for v1.0. Two tests: zero outbound calls with no key configured, and calls only to that provider's endpoint with one configured.)*
+- **The WeAllHateLife server** stores everything on your own machine, sends no telemetry and runs no update check. If you add your own provider key in the site, the server calls that one provider and nothing else. The claim is therefore **"nothing leaves unless you configure a key, and then only to the provider you chose"** — never a blanket promise that nothing leaves at all. *(Planned for v1.0. Two tests: zero outbound calls with no key configured, and calls only to that provider's endpoint with one configured.)*
 - **The AI you connect** is outside that boundary. If you connect a hosted model, whatever it reads travels to whoever runs that model. We can show you what was read. We cannot stop it leaving.
 
 **So: "your data never leaves your machine" is not a claim this project makes**, because it would be false under a cloud-hosted agent, and false again the moment you configure a key.
 
-**If you want nothing to leave your machine, point OhMyLife at a local model — or connect no model at all.** That is the only thing that actually delivers it, so it is what this documentation names rather than a setting that merely implies it.
+**If you want nothing to leave your machine, point WeAllHateLife at a local model — or connect no model at all.** That is the only thing that actually delivers it, so it is what this documentation names rather than a setting that merely implies it.
 
 **There are no privacy tiers.** No per-entry `open` / `private` / `sealed` visibility, no area that hides itself — whatever the agent you connect can reach, it can read. Tiers were considered and rejected: nothing about a tier stops a hosted model retaining what it was already shown, so it would sell a safety it cannot deliver, and a false sense of safety is worse than a stated limit.
 
@@ -103,14 +101,16 @@ What an agent is *granted* — per-area access, and what requires your explicit 
 
 Both are planned for v1.0, and neither is a fallback for the other:
 
-- **Connect the agent you already run.** OhMyLife is itself an MCP server, so Claude Code, Codex, opencode or anything else that speaks [MCP](https://modelcontextprotocol.io) connects to it directly. No second subscription, and no decision by us about which model you are allowed to use. This is the primary path, and it costs you nothing extra.
-- **Or paste your own key into the site.** Add a provider key in OhMyLife itself and the built-in assistant works there, so nobody without an agent is locked out. It is your key and your provider — **this project hosts no model.** The trade is in the privacy section above: a configured key is what makes the server itself call out.
+- **Connect the agent you already run.** WeAllHateLife is itself an MCP server, so Claude Code, Codex, opencode or anything else that speaks [MCP](https://modelcontextprotocol.io) connects to it directly. No second subscription, and no decision by us about which model you are allowed to use. This is the primary path, and it costs you nothing extra.
+- **Or paste your own key into the site.** Add a provider key in WeAllHateLife itself and the built-in assistant works there, so nobody without an agent is locked out. It is your key and your provider — **this project hosts no model.** The trade is in the privacy section above: a configured key is what makes the server itself call out.
 
 The honest half of that: **the quality of the filing is your model's, not ours.** This app is a place and a protocol; what travels over it is whatever your agent produces. Nothing has been measured.
 
 ## Themes are photographs you can swap
 
-The design is warm and image-led — cream and parchment, deep forest green, terracotta, sage, lamplight throughout. The photographs are **data, not markup**: a theme is a folder with a manifest, a palette, and one image per slot. Drop in your own photographs and the mood changes while the structure stays put.
+The design is warm and image-led — cream and parchment, deep forest green, terracotta, sage, lamplight throughout. The photographs are **data, not markup**: a theme is a folder with a manifest, a palette, and one image per slot.
+
+**Uploading your own photo for a slot is the primary path.** *(Planned.)* Where a slot has no upload, the default is a small set of calm, category-wise images generated with an AI image tool — no bundled stock photography, and no licence to track down. Until that generated set ships, drawn placeholder scenes fill the slot instead.
 
 Light and dark are each designed, not inverted.
 
@@ -126,4 +126,4 @@ Light and dark are each designed, not inverted.
 
 MIT. See [LICENSE](LICENSE).
 
-Photographs shipped with a theme are licensed separately and individually, and each one's licence is recorded in its theme manifest. The MIT licence covers the code, not the images.
+The MIT licence covers the code. Default theme images are generated, not stock photography, and any photo in your own life is yours.

@@ -1,6 +1,6 @@
 # Contributing
 
-OhMyLife is pre-implementation. The specification, architecture and structure exist; working code does not yet.
+WeAllHateLife is pre-implementation. The specification, architecture and structure exist; working code does not yet.
 
 **Implementation contributions are not being accepted until the foundation is complete.** Issues and discussion about the specification are welcome now, and the most useful thing you can bring today is an argument about the product rather than a patch.
 
@@ -12,7 +12,7 @@ OhMyLife is pre-implementation. The specification, architecture and structure ex
 4. The guilt constraints — no counts, badges, streaks, scores, rings or red — are structural. Do not add a component that makes one possible.
 5. Every write carries a required reason, and the reason becomes the visible tending line. Do not add a write path that bypasses it.
 6. Every new dependency needs its licence stated in the pull request.
-7. **Every photograph needs its own licence line in `theme.json`.** An image is not covered by this repository's MIT licence, and an image without a licence line will not be merged.
+7. **A user's own uploaded photo is the primary path for any image slot.** *(Planned.)* Where a slot has no upload, the default is a small set of calm, category-wise generated images, not stock photography — so there's no licence line to add.
 
 ## Privacy is not a review nicety here
 

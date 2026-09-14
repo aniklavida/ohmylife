@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-OhMyLife has no public release yet, so no version is supported.
+WeAllHateLife has no public release yet, so no version is supported.
 
 ## Reporting a vulnerability
 
