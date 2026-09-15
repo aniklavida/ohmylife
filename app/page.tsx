@@ -17,6 +17,8 @@ import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../lib/index/r
 import { composeAreaCards, composeObservations } from "../lib/summary/compose";
 import { computeOpenItems } from "../lib/summary/whats-open";
 import { readRecentTending } from "../lib/tending/record";
+import { getActiveTheme } from "../lib/theme/load";
+import { resolveAreaPhotos, resolveHeroPhoto } from "../lib/theme/resolve";
 
 // Without this, Next has no reason to think this page is anything but
 // static — nothing here reads a cookie or a header — and would happily
@@ -37,10 +39,22 @@ export default async function HomePage() {
   const tending = readRecentTending(lifeRoot);
   const quiet = items.length === 0;
 
+  const theme = getActiveTheme(lifeRoot);
+  const heroPhoto = resolveHeroPhoto(theme, lifeRoot);
+  const areaPhotos = resolveAreaPhotos(
+    theme,
+    areaCards.map((c) => c.area),
+    lifeRoot,
+  );
+  const cardsWithPhotos = areaCards.map((card) => ({
+    ...card,
+    photo: areaPhotos[card.area],
+  }));
+
   return (
     <>
       <LifeSummary observations={observations} today={today} />
-      {quiet ? <QuietState /> : <OpenToday items={items} />}
+      {quiet ? <QuietState photo={heroPhoto} /> : <OpenToday items={items} photo={heroPhoto} />}
 
       <section className="house" aria-labelledby="house-heading">
         <header className="section-head">
@@ -51,7 +65,7 @@ export default async function HomePage() {
             {quiet ? "a good day to wander" : "wander in when there's time"}
           </Script>
         </header>
-        <AreaCardGrid cards={areaCards} />
+        <AreaCardGrid cards={cardsWithPhotos} />
       </section>
 
       <div className="home-close">

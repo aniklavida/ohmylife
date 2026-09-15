@@ -1,4 +1,4 @@
-import { Plate } from "../primitives/plate";
+import { Plate, type PlateImage } from "../primitives/plate";
 import { Script } from "../primitives/script";
 import { Body, Display, Label } from "../primitives/prose";
 import { SCENE_DESCRIPTION } from "../scenes/scenes";
@@ -14,10 +14,18 @@ import { SCENE_DESCRIPTION } from "../scenes/scenes";
  * day ends up looking like a page that failed to load (docs/SPEC.md §4). It
  * stays warm and full instead: a picture, a handwritten note, real sentences.
  */
-export function QuietState() {
+
+export interface QuietStateProps {
+  /** Optional hero photograph for today — from active theme or user. */
+  photo?: PlateImage;
+}
+
+export function QuietState(props: QuietStateProps) {
+  const photo = props?.photo;
+  const image: PlateImage = photo?.src ? photo : { alt: SCENE_DESCRIPTION.room };
   return (
     <section className="today quiet-state" aria-labelledby="quiet-state-heading">
-      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }} className="today__plate">
+      <Plate variant="hero" scene="room" image={image} className="today__plate">
         <Label>Today</Label>
         <Display id="quiet-state-heading">Nothing needs you today.</Display>
         <Body>
