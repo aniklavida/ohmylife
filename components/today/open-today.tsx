@@ -1,5 +1,5 @@
 import type { OpenItem } from "../../lib/summary/whats-open";
-import { Plate } from "../primitives/plate";
+import { Plate, type PlateImage } from "../primitives/plate";
 import { Script } from "../primitives/script";
 import { Body, Display, Label } from "../primitives/prose";
 import { SCENE_DESCRIPTION } from "../scenes/scenes";
@@ -18,6 +18,12 @@ function humanizeDue(item: OpenItem): string {
   return date.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 }
 
+export interface OpenTodayProps {
+  items: OpenItem[];
+  /** Optional hero photograph for today — from active theme or user. */
+  photo?: PlateImage;
+}
+
 /**
  * A day when something is genuinely open — the glance. The room is the
  * hero, and what needs you is a note pinned to its wall, beside the
@@ -27,10 +33,11 @@ function humanizeDue(item: OpenItem): string {
  * items appears anywhere, and every item is written the same way whatever
  * its date — only the date itself, read plainly, tells them apart.
  */
-export function OpenToday({ items }: { items: OpenItem[] }) {
+export function OpenToday({ items, photo }: OpenTodayProps) {
+  const image: PlateImage = photo?.src ? photo : { alt: SCENE_DESCRIPTION.room };
   return (
     <section className="today open-today" aria-labelledby="open-today-heading">
-      <Plate variant="hero" scene="room" image={{ alt: SCENE_DESCRIPTION.room }} className="today__plate">
+      <Plate variant="hero" scene="room" image={image} className="today__plate">
         <Label>Today</Label>
         <Display id="open-today-heading">A few things are waiting for you.</Display>
         <Body>Nothing urgent — just what is genuinely due, whenever you get to it.</Body>
