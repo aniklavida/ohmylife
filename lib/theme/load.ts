@@ -96,9 +96,26 @@ export function resolveActiveThemeId(lifeRoot?: string): string {
 }
 
 /**
+ * A theme ID names one directory inside the themes root. It is never a path.
+ *
+ * Today the ID only ever comes from an environment variable or the owner's own
+ * life configuration, so a traversal would read a file the operator can already
+ * read. That stops being true the moment a theme becomes selectable from the
+ * interface, which is where this is going. Constraining the shape now is free;
+ * discovering later that `path.join` accepted `../../.ssh/id_rsa` is not.
+ */
+const THEME_ID_PATTERN = /^[a-z0-9][a-z0-9_-]*$/;
+
+/**
  * Loads a theme by ID.
  */
 export function loadTheme(themeId: string, customThemesRoot?: string): ThemeManifest {
+  if (!THEME_ID_PATTERN.test(themeId)) {
+    throw new Error(
+      `Invalid theme id ${JSON.stringify(themeId)}: a theme id names a directory in the themes root, ` +
+        "and must match /^[a-z0-9][a-z0-9_-]*$/",
+    );
+  }
   const root = resolveThemesRoot(customThemesRoot);
   const themeDir = path.join(/* turbopackIgnore: true */ root, themeId);
   return loadThemeManifest(themeDir);

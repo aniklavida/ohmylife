@@ -693,6 +693,28 @@ describe("Shipped themes and theme switching", () => {
     }
   });
 
+  it("a theme id is a directory name, not a path: traversal is rejected", () => {
+    for (const hostile of [
+      "../../../etc",
+      "..",
+      "/etc/passwd",
+      "lamplight/../../secrets",
+      "",
+      "Lamplight",
+    ]) {
+      expect(() => loadTheme(hostile)).toThrow(/Invalid theme id/);
+    }
+
+    // The legitimate ids still load.
+    expect(loadTheme("lamplight").id).toBe("lamplight");
+    expect(loadTheme("solarium").id).toBe("solarium");
+  });
+
+  it("an unloadable active theme falls back to the default rather than throwing", () => {
+    process.env.WEALLHATELIFE_THEME = "../../../etc";
+    expect(getActiveTheme().id).toBe("lamplight");
+  });
+
   it("theme switching touches no component: changing environment variable switches the active theme", () => {
     process.env.WEALLHATELIFE_THEME = "solarium";
     const active = getActiveTheme();
