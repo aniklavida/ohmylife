@@ -15,25 +15,25 @@ const DEFAULT_THEME_ID = "lamplight";
 /** Resolves the directory where themes are stored. */
 export function resolveThemesRoot(customThemesRoot?: string): string {
   if (customThemesRoot !== undefined) {
-    return path.resolve(customThemesRoot);
+    return path.resolve(/* turbopackIgnore: true */ customThemesRoot);
   }
   const fromEnv = process.env.WEALLHATELIFE_THEMES_DIR || process.env.OHMYLIFE_THEMES_DIR;
   if (fromEnv) {
-    return path.resolve(fromEnv);
+    return path.resolve(/* turbopackIgnore: true */ fromEnv);
   }
-  return path.resolve("./themes");
+  return path.resolve(/* turbopackIgnore: true */ "./themes");
 }
 
 /**
  * Loads and validates a theme manifest from its folder on disk.
  */
 export function loadThemeManifest(themeDir: string): ThemeManifest {
-  const manifestPath = path.join(themeDir, "theme.json");
-  if (!fs.existsSync(manifestPath)) {
+  const manifestPath = path.join(/* turbopackIgnore: true */ themeDir, "theme.json");
+  if (!fs.existsSync(/* turbopackIgnore: true */ manifestPath)) {
     throw new Error(`Theme manifest not found at ${manifestPath}`);
   }
 
-  const rawContent = fs.readFileSync(manifestPath, "utf8");
+  const rawContent = fs.readFileSync(/* turbopackIgnore: true */ manifestPath, "utf8");
   let parsed: unknown;
   try {
     parsed = JSON.parse(rawContent);
@@ -49,14 +49,14 @@ export function loadThemeManifest(themeDir: string): ThemeManifest {
  */
 export function listAvailableThemes(customThemesRoot?: string): string[] {
   const root = resolveThemesRoot(customThemesRoot);
-  if (!fs.existsSync(root)) return [];
+  if (!fs.existsSync(/* turbopackIgnore: true */ root)) return [];
 
   const themes: string[] = [];
-  const entries = fs.readdirSync(root, { withFileTypes: true });
+  const entries = fs.readdirSync(/* turbopackIgnore: true */ root, { withFileTypes: true });
   for (const entry of entries) {
     if (entry.isDirectory()) {
-      const candidateManifest = path.join(root, entry.name, "theme.json");
-      if (fs.existsSync(candidateManifest)) {
+      const candidateManifest = path.join(/* turbopackIgnore: true */ root, entry.name, "theme.json");
+      if (fs.existsSync(/* turbopackIgnore: true */ candidateManifest)) {
         themes.push(entry.name);
       }
     }
@@ -73,11 +73,13 @@ export function resolveActiveThemeId(lifeRoot?: string): string {
     return envTheme.trim();
   }
 
-  if (lifeRoot && fs.existsSync(lifeRoot)) {
-    const lifeThemeFile = path.join(lifeRoot, "theme.json");
-    if (fs.existsSync(lifeThemeFile)) {
+  if (lifeRoot && fs.existsSync(/* turbopackIgnore: true */ lifeRoot)) {
+    const lifeThemeFile = path.join(/* turbopackIgnore: true */ lifeRoot, "theme.json");
+    if (fs.existsSync(/* turbopackIgnore: true */ lifeThemeFile)) {
       try {
-        const content = JSON.parse(fs.readFileSync(lifeThemeFile, "utf8")) as Record<string, unknown>;
+        const content = JSON.parse(
+          fs.readFileSync(/* turbopackIgnore: true */ lifeThemeFile, "utf8"),
+        ) as Record<string, unknown>;
         if (typeof content.theme === "string" && content.theme.trim().length > 0) {
           return content.theme.trim();
         }
@@ -98,7 +100,7 @@ export function resolveActiveThemeId(lifeRoot?: string): string {
  */
 export function loadTheme(themeId: string, customThemesRoot?: string): ThemeManifest {
   const root = resolveThemesRoot(customThemesRoot);
-  const themeDir = path.join(root, themeId);
+  const themeDir = path.join(/* turbopackIgnore: true */ root, themeId);
   return loadThemeManifest(themeDir);
 }
 

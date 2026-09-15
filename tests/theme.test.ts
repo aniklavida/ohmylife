@@ -5,6 +5,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it } from "vitest";
 import { AreaCard } from "../components/areas/area-card";
 import { Plate } from "../components/primitives/plate";
+import { QuietState } from "../components/quiet/quiet-state";
+import { OpenToday } from "../components/today/open-today";
 import { getActiveTheme, listAvailableThemes, loadTheme } from "../lib/theme/load";
 import { resolveAreaPhoto, serializeThemeCss } from "../lib/theme/resolve";
 import { validateThemeManifest } from "../lib/theme/schema";
@@ -145,6 +147,65 @@ describe("Done-when: switching theme changes every image and colour and moves no
     const structureLamplight = extractLayoutStructure(renderLamplightArea());
     const structureSolarium = extractLayoutStructure(renderSolariumArea());
     expect(structureLamplight).toEqual(structureSolarium);
+  });
+
+  it("switching theme moves no layout on QuietState and OpenToday hero surfaces", () => {
+    const lamplight = loadTheme("lamplight");
+    const solarium = loadTheme("solarium");
+
+    // QuietState comparison
+    const renderLamplightQuiet = () =>
+      renderToStaticMarkup(createElement(QuietState, { photo: resolveAreaPhoto(lamplight, "memories") }));
+    const renderSolariumQuiet = () =>
+      renderToStaticMarkup(createElement(QuietState, { photo: resolveAreaPhoto(solarium, "memories") }));
+
+    expect(() => {
+      assertNoLayoutShift(renderLamplightQuiet, lamplight, renderSolariumQuiet, solarium);
+    }).not.toThrow();
+
+    const quietStructureA = extractLayoutStructure(renderLamplightQuiet());
+    const quietStructureB = extractLayoutStructure(renderSolariumQuiet());
+    expect(quietStructureA).toEqual(quietStructureB);
+
+    // OpenToday comparison
+    const sampleItems = [
+      {
+        id: "body-dentist",
+        area: "body",
+        kind: "task",
+        title: "Dentist checkup",
+        due_field: "due",
+        due_value: "2026-10-01",
+        status: "upcoming" as const,
+      },
+    ];
+
+    const renderLamplightOpen = () =>
+      renderToStaticMarkup(createElement(OpenToday, { items: sampleItems, photo: resolveAreaPhoto(lamplight, "body") }));
+    const renderSolariumOpen = () =>
+      renderToStaticMarkup(createElement(OpenToday, { items: sampleItems, photo: resolveAreaPhoto(solarium, "body") }));
+
+    expect(() => {
+      assertNoLayoutShift(renderLamplightOpen, lamplight, renderSolariumOpen, solarium);
+    }).not.toThrow();
+
+    const openStructureA = extractLayoutStructure(renderLamplightOpen());
+    const openStructureB = extractLayoutStructure(renderSolariumOpen());
+    expect(openStructureA).toEqual(openStructureB);
+  });
+
+  it("detects deliberate layout shift: structural DOM change makes the check fail", () => {
+    const lamplight = loadTheme("lamplight");
+    const solarium = loadTheme("solarium");
+
+    const renderNormal = () =>
+      '<section class="today"><div class="plate plate--hero"><div class="content">Content</div></div></section>';
+    const renderShifted = () =>
+      '<section class="today shifted"><div class="plate plate--hero"><div class="extra-column">Shift</div></div></section>';
+
+    expect(() => {
+      assertNoLayoutShift(renderNormal, lamplight, renderShifted, solarium);
+    }).toThrow(/Layout shift detected/i);
   });
 
   it("detects deliberate layout shift: changing a spacing token in a theme makes the check fail", () => {

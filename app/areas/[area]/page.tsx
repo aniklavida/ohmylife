@@ -6,6 +6,8 @@ import { AREAS, type Area } from "../../../lib/entry/schema";
 import { ensureFreshIndex, resolveDbPath, resolveLifeRoot } from "../../../lib/index/runtime";
 import { listIndexedEntries } from "../../../lib/index/query";
 import { sentenceForArea } from "../../../lib/summary/compose";
+import { getActiveTheme } from "../../../lib/theme/load";
+import { resolveAreaPhoto } from "../../../lib/theme/resolve";
 
 const AREA_LABEL: Record<string, string> = {
   memories: "Memories",
@@ -41,9 +43,13 @@ export default async function AreaPage({ params }: { params: Promise<{ area: str
     .sort((a, b) => a.title.localeCompare(b.title));
   const sentence = sentenceForArea(dbPath, typedArea);
 
+  const theme = getActiveTheme(lifeRoot);
+  const areaPhoto = resolveAreaPhoto(theme, typedArea, lifeRoot);
+  const image = areaPhoto?.src ? areaPhoto : { alt: SCENE_DESCRIPTION[scene] };
+
   return (
     <section className="area-page" aria-labelledby="area-page-heading">
-      <Plate variant="hero" scene={scene} image={{ alt: SCENE_DESCRIPTION[scene] }}>
+      <Plate variant="hero" scene={scene} image={image}>
         <Label>Area</Label>
         <Display id="area-page-heading">{label}</Display>
         <Body>{sentence}</Body>

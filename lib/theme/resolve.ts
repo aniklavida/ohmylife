@@ -41,8 +41,8 @@ export function tokenToCssVarName(key: string): string {
  */
 function findUserPhotoFile(lifeRoot: string, subPath: string): string | undefined {
   for (const ext of SUPPORTED_IMAGE_EXTENSIONS) {
-    const candidate = path.join(lifeRoot, `${subPath}${ext}`);
-    if (fs.existsSync(candidate)) {
+    const candidate = path.join(/* turbopackIgnore: true */ lifeRoot, `${subPath}${ext}`);
+    if (fs.existsSync(/* turbopackIgnore: true */ candidate)) {
       return candidate;
     }
   }
@@ -56,12 +56,14 @@ function readLifeThemeOverrides(lifeRoot?: string): {
   areas?: Record<string, { src: string; alt?: string; license?: string }>;
   hero?: Array<{ src: string; alt?: string; license?: string }>;
 } | null {
-  if (!lifeRoot || !fs.existsSync(lifeRoot)) return null;
-  const configPath = path.join(lifeRoot, "theme.json");
-  if (!fs.existsSync(configPath)) return null;
+  if (!lifeRoot || !fs.existsSync(/* turbopackIgnore: true */ lifeRoot)) return null;
+  const configPath = path.join(/* turbopackIgnore: true */ lifeRoot, "theme.json");
+  if (!fs.existsSync(/* turbopackIgnore: true */ configPath)) return null;
 
   try {
-    const content = JSON.parse(fs.readFileSync(configPath, "utf8")) as Record<string, unknown>;
+    const content = JSON.parse(
+      fs.readFileSync(/* turbopackIgnore: true */ configPath, "utf8"),
+    ) as Record<string, unknown>;
     const images = content.images as {
       areas?: Record<string, { src: string; alt?: string; license?: string }>;
       hero?: Array<{ src: string; alt?: string; license?: string }>;
